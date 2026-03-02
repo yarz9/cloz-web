@@ -1,4 +1,8 @@
 {
-  "build": { "builder": "NIXPACKS" },
-  "deploy": { "startCommand": "npx serve . --single" }
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "python3 -m http.server 8080"
+  }
 }
