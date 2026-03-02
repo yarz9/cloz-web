@@ -9,7 +9,7 @@ echo  ================================================
 echo.
 
 :: ── CONFIG ──────────────────────────────────────────
-set REPO_URL=https://github.com/yarz9/cloz-webgit
+set REPO_URL=https://github.com/yarz9/cloz-web.git
 set BRANCH=main
 :: ────────────────────────────────────────────────────
 
