@@ -4,45 +4,313 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Store — Cloz Optimizer</title>
-  <meta http-equiv="refresh" content="4;url=https://discord.gg/zBp34yu2hf"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0a0a0f;
+      --bg2:     #0f0f1a;
+      --card:    #16162a;
+      --border:  #2a2a45;
+      --purple:  #7c3aed;
+      --purple2: #9d5ff3;
+      --purple3: #c084fc;
+      --glow:    rgba(124,58,237,0.35);
+      --text:    #f0f0ff;
+      --muted:   #8888aa;
+      --green:   #10b981;
+      --radius:  14px;
+    }
+
+    html { scroll-behavior: smooth; }
     body {
       font-family: "Inter", sans-serif;
-      background: #0a0a0f; color: #f0f0ff;
-      min-height: 100vh; display: flex;
-      align-items: center; justify-content: center;
-      text-align: center; padding: 24px;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; padding: 0;
     }
-    .box {
-      background: #16162a; border: 1px solid #2a2a45;
-      border-radius: 20px; padding: 60px 48px; max-width: 480px;
+
+    /* ── NAV ── */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 60px;
+      background: rgba(10,10,15,0.95);
+      border-bottom: 1px solid var(--border);
     }
-    .icon { font-size: 3rem; margin-bottom: 24px; }
-    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; }
-    p { color: #8888aa; font-size: 0.95rem; line-height: 1.7; margin-bottom: 32px; }
-    a {
-      display: inline-block;
-      background: linear-gradient(135deg, #7c3aed, #9d5ff3);
-      color: #fff; padding: 13px 32px; border-radius: 10px;
-      font-weight: 700; text-decoration: none; font-size: 0.95rem;
-      box-shadow: 0 0 32px rgba(124,58,237,0.35);
-      transition: transform 0.2s;
+    .logo {
+      font-size: 1.3rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--purple2), var(--purple3));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    a:hover { transform: translateY(-2px); }
-    .redirect-note {
-      margin-top: 20px; font-size: 0.78rem; color: #555;
+    .logo span { -webkit-text-fill-color: #fff; font-weight: 300; }
+    nav a.back {
+      color: var(--muted); text-decoration: none; font-size: 0.88rem;
+      font-weight: 500; transition: color 0.2s;
+    }
+    nav a.back:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .store-hero {
+      text-align: center;
+      padding: 64px 24px 48px;
+      background: radial-gradient(ellipse 800px 400px at 50% 0%, rgba(124,58,237,0.12), transparent);
+    }
+    .store-hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; letter-spacing: -1px; margin-bottom: 12px;
+    }
+    .store-hero p { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 500px; margin: 0 auto 12px; }
+    .dm-notice {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3);
+      color: var(--green); padding: 6px 16px; border-radius: 99px;
+      font-size: 0.8rem; font-weight: 600; margin-top: 12px;
+    }
+
+    /* ── DISCORD ID BANNER (shown when discord_id is in URL) ── */
+    #discord-id-banner {
+      display: none;
+      background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.4);
+      color: var(--purple3); text-align: center;
+      padding: 10px 24px; font-size: 0.85rem; font-weight: 600;
+    }
+
+    /* ── GRID ── */
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      max-width: 1080px; margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── PLAN CARDS ── */
+    .plan-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px 26px;
+      position: relative; transition: border-color 0.3s, transform 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .plan-card:hover { border-color: var(--purple); transform: translateY(-4px); }
+    .plan-card.featured {
+      border-color: var(--purple);
+      background: linear-gradient(160deg, rgba(124,58,237,0.12), var(--card));
+      box-shadow: 0 0 48px rgba(124,58,237,0.2);
+    }
+    .badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--purple), var(--purple2));
+      color: #fff; font-size: 0.68rem; font-weight: 700;
+      padding: 4px 14px; border-radius: 99px; white-space: nowrap; letter-spacing: 0.5px;
+    }
+    .plan-icon { font-size: 2rem; margin-bottom: 16px; }
+    .plan-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+    .plan-tagline { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+
+    /* Description text (from the brief) */
+    .plan-desc {
+      font-size: 0.83rem; color: var(--muted); line-height: 1.65;
+      margin-bottom: 24px; flex: 1;
+    }
+
+    /* Feature list */
+    .plan-feats { list-style: none; margin-bottom: 28px; }
+    .plan-feats li {
+      font-size: 0.83rem; color: var(--muted);
+      padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .plan-feats li::before { content: "✓"; color: var(--purple3); font-weight: 700; }
+    .plan-feats li.no::before { content: "✗"; color: #555; }
+    .plan-feats li.no { color: #555; }
+
+    /* Buy button */
+    .buy-btn {
+      display: block; width: 100%; text-align: center;
+      padding: 13px; border-radius: 10px; font-weight: 700;
+      font-size: 0.95rem; text-decoration: none; cursor: pointer;
+      border: none; transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: auto;
+    }
+    .buy-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .buy-outline:hover { border-color: var(--purple); background: rgba(124,58,237,0.1); }
+    .buy-filled {
+      background: linear-gradient(135deg, var(--purple), var(--purple2));
+      color: #fff; box-shadow: 0 0 24px var(--glow);
+    }
+    .buy-filled:hover { transform: translateY(-2px); box-shadow: 0 0 40px var(--glow); }
+
+    /* Stacked buttons (Pro card) */
+    .buy-stack { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+
+    /* Footer */
+    .store-footer {
+      text-align: center; color: var(--muted); font-size: 0.8rem;
+      padding: 24px; border-top: 1px solid var(--border);
+    }
+    .store-footer a { color: var(--purple3); text-decoration: none; }
+
+    @media(max-width: 600px) {
+      nav { padding: 16px 20px; }
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <div class="icon">🛒</div>
-    <h1>Store Coming Soon</h1>
-    <p>Our official store is being set up. In the meantime, you can purchase a license key directly through our Discord server. A staff member will assist you.</p>
-    <a href="https://discord.gg/zBp34yu2hf" target="_blank">Open Discord Server</a>
-    <p class="redirect-note">Redirecting you to Discord in a few seconds...</p>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Cloz<span>Optimizer</span> — Store</div>
+  <a href="/" class="back">← Back to Home</a>
+</nav>
+
+<!-- Discord ID detected banner -->
+<div id="discord-id-banner">
+  ✅ Your Discord ID has been detected — it will be linked to your purchase automatically.
+</div>
+
+<!-- HERO -->
+<div class="store-hero">
+  <h1>🛒 Pick Your Plan</h1>
+  <p>All plans include the full Cloz Optimizer app. Your license key is delivered to your Discord DMs instantly after purchase.</p>
+  <div class="dm-notice">⚡ Instant delivery via Discord DM</div>
+</div>
+
+<!-- PLAN CARDS -->
+<div class="store-grid">
+
+  <!-- TRIAL (free) -->
+  <div class="plan-card">
+    <div class="plan-icon">🔰</div>
+    <div class="plan-name">Trial</div>
+    <div class="plan-tagline">Free — No license required</div>
+    <p class="plan-desc">Try Cloz Optimizer with the core optimization features. No purchase needed — just download and go.</p>
+    <ul class="plan-feats">
+      <li>Core optimizations</li>
+      <li>Basic benchmarking</li>
+      <li class="no">Process manager</li>
+      <li class="no">Leaderboard submission</li>
+      <li class="no">Licensed Lounge</li>
+    </ul>
+    <a href="https://discord.gg/zBp34yu2hf" target="_blank" class="buy-btn buy-outline">
+      Join Discord to Download
+    </a>
   </div>
+
+  <!-- PRO -->
+  <div class="plan-card">
+    <div class="plan-icon">🥈</div>
+    <div class="plan-name">Cloz Pro</div>
+    <div class="plan-tagline">1 Month or 3 Months</div>
+    <p class="plan-desc">
+      Level up your PC with all premium optimizations, FPS boosts, and auto-tweaks.
+      Perfect for competitive players during grind periods — available in 1-month or 3-month options.
+    </p>
+    <ul class="plan-feats">
+      <li>Full process manager</li>
+      <li>Leaderboard submission</li>
+      <li>Licensed Lounge access</li>
+      <li class="no">Premium Lounge</li>
+      <li class="no">Early access builds</li>
+    </ul>
+    <div class="buy-stack">
+      <!-- data-url: replace SLUG with your real Sell.app product slugs -->
+      <button class="buy-btn buy-outline sellapp-btn"
+              data-url="https://sell.app/product/REPLACE_WITH_PRO_1M_SLUG">
+        Buy — 1 Month
+      </button>
+      <button class="buy-btn buy-outline sellapp-btn"
+              data-url="https://sell.app/product/REPLACE_WITH_PRO_3M_SLUG">
+        Buy — 3 Months
+      </button>
+    </div>
+  </div>
+
+  <!-- ANNUAL (featured) -->
+  <div class="plan-card featured">
+    <div class="badge">⭐ MOST POPULAR</div>
+    <div class="plan-icon">🥇</div>
+    <div class="plan-name">Cloz Elite</div>
+    <div class="plan-tagline">Annual — 12 Months</div>
+    <p class="plan-desc">
+      Go full sweat mode with a full year of maximum performance, priority updates, and all future optimizations —
+      so your setup stays ahead of every Windows update and new game release.
+    </p>
+    <ul class="plan-feats">
+      <li>Everything in Pro</li>
+      <li>Premium Lounge access</li>
+      <li>Early access builds</li>
+      <li>Feature voting</li>
+      <li>Priority support</li>
+    </ul>
+    <button class="buy-btn buy-filled sellapp-btn"
+            data-url="https://sell.app/product/REPLACE_WITH_ANNUAL_SLUG">
+      Buy Annual
+    </button>
+  </div>
+
+  <!-- LIFETIME -->
+  <div class="plan-card">
+    <div class="plan-icon">💎</div>
+    <div class="plan-name">Cloz Infinity</div>
+    <div class="plan-tagline">Lifetime — Pay Once, Own Forever</div>
+    <p class="plan-desc">
+      Own your performance forever. Pay once, unlock every current and future Cloz feature,
+      and keep your rig running like a fresh install — for life.
+    </p>
+    <ul class="plan-feats">
+      <li>Everything in Annual</li>
+      <li>Lifetime Vault access</li>
+      <li>Exclusive drops & perks</li>
+      <li>Direct dev feedback line</li>
+      <li>Highest priority support</li>
+    </ul>
+    <button class="buy-btn buy-filled sellapp-btn"
+            data-url="https://sell.app/product/REPLACE_WITH_LIFETIME_SLUG">
+      Buy Lifetime
+    </button>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="store-footer">
+  Secure checkout via <strong>Sell.app</strong> · License delivered to your Discord DMs ·
+  Questions? <a href="https://discord.gg/zBp34yu2hf" target="_blank">Join our Discord</a>
+</div>
+
+<script>
+  // ── Discord ID passthrough ───────────────────────────────────────────────────
+  // If the user came from Discord with ?discord_id=123456 in the URL,
+  // show the banner and append the ID to every Sell.app checkout link.
+  // This way the webhook knows who bought without them filling in a custom field.
+  (function () {
+    const params    = new URLSearchParams(window.location.search);
+    const discordId = params.get("discord_id") || "";
+
+    if (discordId) {
+      const banner = document.getElementById("discord-id-banner");
+      if (banner) banner.style.display = "block";
+    }
+
+    document.querySelectorAll(".sellapp-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        let url = btn.getAttribute("data-url");
+        if (!url || url.includes("REPLACE_WITH")) {
+          alert("⚠️ Store link not configured yet. Please check back soon or contact us on Discord.");
+          return;
+        }
+        if (discordId) {
+          const sep = url.includes("?") ? "&" : "?";
+          url = url + sep + "discord_id=" + encodeURIComponent(discordId);
+        }
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+    });
+  })();
+</script>
+
 </body>
 </html>
