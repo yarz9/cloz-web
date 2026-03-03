@@ -34,7 +34,6 @@
       overflow-x: hidden;
     }
 
-    /* ── SCROLLBAR ── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 99px; }
@@ -315,7 +314,7 @@
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#leaderboard">Leaderboard</a></li>
     <li><a href="#discord">Community</a></li>
-    <li><a href="/store" class="nav-cta">Get License</a></li>
+    <li><a href="#pricing" class="nav-cta">Get License</a></li>
   </ul>
 </nav>
 
@@ -326,7 +325,7 @@
   <p>Cloz Optimizer is a powerful Windows optimization tool built for gamers and power users. Boost FPS, clean your system, and benchmark your PC — all in one app.</p>
   <div class="hero-btns">
     <a href="#discord" class="btn-primary">📥 Get Download Link</a>
-    <a href="/store" class="btn-secondary">💎 Get a License</a>
+    <a href="#pricing" class="btn-secondary">💎 Get a License</a>
   </div>
   <div class="hero-stats">
     <div class="stat"><div class="stat-num">4</div><div class="stat-label">License Plans</div></div>
@@ -365,8 +364,8 @@
       </div>
       <div class="feature-card">
         <div class="feature-icon">🔑</div>
-        <h3>Discord License System</h3>
-        <p>License activation is handled securely through Discord. Staff review and approve your key — no sketchy third-party sites.</p>
+        <h3>Sell.app License System</h3>
+        <p>Purchase instantly via Sell.app. Your license key is auto-generated and delivered to your Discord DMs within seconds.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🔄</div>
@@ -397,9 +396,10 @@
   <div class="container">
     <p class="section-label">Pricing</p>
     <h2 class="section-title">Choose your plan</h2>
-    <p class="section-sub">All paid plans include full access to Cloz Optimizer. Pick the duration that works for you.</p>
+    <p class="section-sub">All paid plans include full access to Cloz Optimizer. Your key is delivered instantly to your Discord DMs after purchase.</p>
     <div class="pricing-grid">
 
+      <!-- TRIAL -->
       <div class="pricing-card">
         <div class="plan-icon">🔰</div>
         <div class="plan-name">Trial</div>
@@ -412,12 +412,13 @@
           <li class="no">Licensed Lounge</li>
           <li class="no">Early access</li>
         </ul>
-        <a href="https://discord.gg/zBp34yu2hf" class="plan-btn plan-btn-outline">Join Discord</a>
+        <a href="https://discord.gg/zBp34yu2hf" class="plan-btn plan-btn-outline" target="_blank">Join Discord</a>
       </div>
 
+      <!-- PRO (1M + 3M) — two buttons, same card -->
       <div class="pricing-card">
         <div class="plan-icon">🥈</div>
-        <div class="plan-name">Pro</div>
+        <div class="plan-name">Cloz Pro</div>
         <div class="plan-duration">1 Month or 3 Months</div>
         <ul class="plan-features">
           <li>Everything in Trial</li>
@@ -427,14 +428,28 @@
           <li class="no">Premium Lounge</li>
           <li class="no">Early access builds</li>
         </ul>
-        <a href="/store" class="plan-btn plan-btn-outline">Get Pro</a>
+        <!-- data-plan is used by the JS below to append ?discord_id= -->
+        <a href="#"
+           class="plan-btn plan-btn-outline sellapp-btn"
+           data-plan="pro_1m"
+           data-url="https://sell.app/product/REPLACE_WITH_PRO_1M_SLUG"
+           style="margin-bottom: 8px;">
+          Get Pro — 1 Month
+        </a>
+        <a href="#"
+           class="plan-btn plan-btn-outline sellapp-btn"
+           data-plan="pro_3m"
+           data-url="https://sell.app/product/REPLACE_WITH_PRO_3M_SLUG">
+          Get Pro — 3 Months
+        </a>
       </div>
 
+      <!-- ANNUAL (featured) -->
       <div class="pricing-card featured">
         <div class="featured-badge">⭐ MOST POPULAR</div>
         <div class="plan-icon">🥇</div>
-        <div class="plan-name">Annual</div>
-        <div class="plan-duration">12 Months</div>
+        <div class="plan-name">Cloz Elite</div>
+        <div class="plan-duration">Annual — 12 Months</div>
         <ul class="plan-features">
           <li>Everything in Pro</li>
           <li>Premium Lounge access</li>
@@ -443,12 +458,18 @@
           <li>Priority support</li>
           <li class="no">Lifetime Vault</li>
         </ul>
-        <a href="/store" class="plan-btn plan-btn-filled">Get Annual</a>
+        <a href="#"
+           class="plan-btn plan-btn-filled sellapp-btn"
+           data-plan="annual"
+           data-url="https://sell.app/product/REPLACE_WITH_ANNUAL_SLUG">
+          Get Annual
+        </a>
       </div>
 
+      <!-- LIFETIME -->
       <div class="pricing-card">
         <div class="plan-icon">💎</div>
-        <div class="plan-name">Lifetime</div>
+        <div class="plan-name">Cloz Infinity</div>
         <div class="plan-duration">Pay Once, Own Forever</div>
         <ul class="plan-features">
           <li>Everything in Annual</li>
@@ -458,10 +479,20 @@
           <li>Highest priority support</li>
           <li>Never pay again</li>
         </ul>
-        <a href="/store" class="plan-btn plan-btn-filled">Get Lifetime</a>
+        <a href="#"
+           class="plan-btn plan-btn-filled sellapp-btn"
+           data-plan="lifetime"
+           data-url="https://sell.app/product/REPLACE_WITH_LIFETIME_SLUG">
+          Get Lifetime
+        </a>
       </div>
 
     </div>
+
+    <!-- Tip shown under pricing cards -->
+    <p style="text-align:center; color:var(--muted); font-size:0.82rem; margin-top:28px;">
+      💡 After purchase, your license key is sent to your Discord DMs automatically. Make sure your Discord DMs are open.
+    </p>
   </div>
 </section>
 
@@ -476,30 +507,17 @@
         <h3>🏆 Global Benchmark Leaderboard</h3>
         <span class="lb-live">Live</span>
       </div>
-      <div class="lb-row">
-        <div class="lb-rank gold">#1</div>
-        <div class="lb-name">Submit your score to claim the top!</div>
-        <div class="lb-score">—</div>
-      </div>
-      <div class="lb-row">
-        <div class="lb-rank silver">#2</div>
-        <div class="lb-name">—</div>
-        <div class="lb-score">—</div>
-      </div>
-      <div class="lb-row">
-        <div class="lb-rank bronze">#3</div>
-        <div class="lb-name">—</div>
-        <div class="lb-score">—</div>
-      </div>
-      <div class="lb-row">
-        <div class="lb-rank">#4</div>
-        <div class="lb-name">—</div>
-        <div class="lb-score">—</div>
-      </div>
-      <div class="lb-row">
-        <div class="lb-rank">#5</div>
-        <div class="lb-name">—</div>
-        <div class="lb-score">—</div>
+      <div id="lb-body">
+        <!-- Populated by JS from the /leaderboard API -->
+        <div class="lb-row">
+          <div class="lb-rank gold">#1</div>
+          <div class="lb-name">Submit your score to claim the top!</div>
+          <div class="lb-score">—</div>
+        </div>
+        <div class="lb-row"><div class="lb-rank silver">#2</div><div class="lb-name">—</div><div class="lb-score">—</div></div>
+        <div class="lb-row"><div class="lb-rank bronze">#3</div><div class="lb-name">—</div><div class="lb-score">—</div></div>
+        <div class="lb-row"><div class="lb-rank">#4</div><div class="lb-name">—</div><div class="lb-score">—</div></div>
+        <div class="lb-row"><div class="lb-rank">#5</div><div class="lb-name">—</div><div class="lb-score">—</div></div>
       </div>
       <div class="lb-footer">
         Leaderboard updates live via Cloz Optimizer. <a href="https://discord.gg/zBp34yu2hf">Join Discord</a> to submit your score.
@@ -529,13 +547,83 @@
       <a href="#pricing">Pricing</a>
       <a href="#leaderboard">Leaderboard</a>
       <a href="https://discord.gg/zBp34yu2hf" target="_blank">Discord</a>
-      <a href="/store">Store</a>
     </div>
   </div>
   <div class="footer-inner">
     <p class="footer-copy">© 2026 Cloz Optimizer. All rights reserved. Built with ❤️ for the community.</p>
   </div>
 </footer>
+
+<script>
+  // ── Sell.app button wiring ──────────────────────────────────────────────────
+  // If the user arrived from Discord with ?discord_id=... in the URL,
+  // we automatically append it to every Sell.app checkout link so the
+  // webhook can identify who made the purchase without them typing anything.
+  (function () {
+    const params     = new URLSearchParams(window.location.search);
+    const discordId  = params.get("discord_id") || "";
+
+    document.querySelectorAll(".sellapp-btn").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        let url = btn.getAttribute("data-url");
+        if (!url) return;
+
+        // Append discord_id as a query param if we have it
+        // Sell.app will include this in the checkout custom fields (if configured)
+        if (discordId) {
+          const sep = url.includes("?") ? "&" : "?";
+          url = url + sep + "discord_id=" + encodeURIComponent(discordId);
+        }
+
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+    });
+  })();
+
+  // ── Live leaderboard fetch ──────────────────────────────────────────────────
+  // Replace the placeholder rows with real data from the bot's /leaderboard endpoint.
+  // Update BOT_API_URL to your Railway backend URL.
+  (function () {
+    const BOT_API_URL = "https://YOUR_BOT_BACKEND_URL"; // e.g. https://cloz-bot.up.railway.app
+
+    const medals     = ["gold", "silver", "bronze"];
+    const lbBody     = document.getElementById("lb-body");
+
+    async function loadLeaderboard() {
+      try {
+        const res  = await fetch(BOT_API_URL + "/leaderboard");
+        const data = await res.json();
+        if (!data.ok || !data.leaderboard || data.leaderboard.length === 0) return;
+
+        lbBody.innerHTML = "";
+        data.leaderboard.slice(0, 10).forEach(function (entry) {
+          const row       = document.createElement("div");
+          row.className   = "lb-row";
+          const rankClass = medals[entry.rank - 1] || "";
+          row.innerHTML   =
+            '<div class="lb-rank ' + rankClass + '">#' + entry.rank + '</div>' +
+            '<div class="lb-name">'  + escapeHtml(entry.username) + '</div>'  +
+            '<div class="lb-score">' + entry.score + '</div>';
+          lbBody.appendChild(row);
+        });
+      } catch (err) {
+        // Silent fail — keep the placeholder rows
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    loadLeaderboard();
+    setInterval(loadLeaderboard, 60000); // refresh every 60s
+  })();
+</script>
 
 </body>
 </html>
