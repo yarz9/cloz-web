@@ -1,5 +1,8 @@
 [phases.setup]
-nixPkgs = ["python3"]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["npm install"]
 
 [start]
-cmd = "python3 -m http.server 8080"
+cmd = "node_modules/.bin/serve . --single"
