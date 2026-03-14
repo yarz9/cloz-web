@@ -75,10 +75,11 @@ if errorlevel 1 (
 )
 echo  [OK] Committed: %COMMIT_MSG%
 
-:: Push to GitHub
+:: Push local branch to remote main
 echo.
 echo  [PUSH] Pushing to GitHub ^(%BRANCH%^)...
-git push -u origin %BRANCH%
+for /f "tokens=* delims=" %%b in ('git rev-parse --abbrev-ref HEAD') do set LOCAL_BRANCH=%%b
+git push -u origin %LOCAL_BRANCH%:%BRANCH%
 
 if errorlevel 1 (
     echo.
