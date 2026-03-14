@@ -1,3 +1,5 @@
 {
-  "build": { "builder": "NIXPACKS" }
+  "dependencies": {
+    "serve": "^14.2.6"
+  }
 }
