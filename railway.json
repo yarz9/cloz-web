@@ -1,4 +1,11 @@
 {
-  "build": { "builder": "NIXPACKS" },
-  "deploy": { "startCommand": "node_modules/.bin/serve . --single" }
+  "build": {
+    "builder": "NIXPACKS",
+    "nixpacksPlan": {
+      "providers": ["node"]
+    }
+  },
+  "deploy": {
+    "startCommand": "node_modules/.bin/serve . --single"
+  }
 }
