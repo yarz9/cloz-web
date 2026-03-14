@@ -1,628 +1,374 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cloz Optimizer</title>
+  <title>Cloz Optimizer — Your PC, Fully Optimized</title>
+  <meta name="description" content="Cloz Optimizer is a powerful Windows optimization tool for gamers and power users. Boost FPS, benchmark your PC, and compete on the global leaderboard."/>
+  <meta property="og:title" content="Cloz Optimizer — Your PC, Fully Optimized"/>
+  <meta property="og:description" content="Boost FPS, clean your system, and benchmark your PC — all in one app. Download free or get a license for full power."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://cloz-web.up.railway.app/"/>
+  <meta name="theme-color" content="#7c3aed"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #0a0a0f;
-      --bg2:       #0f0f1a;
-      --bg3:       #13131f;
-      --card:      #16162a;
-      --border:    #2a2a45;
-      --purple:    #7c3aed;
-      --purple2:   #9d5ff3;
-      --purple3:   #c084fc;
-      --glow:      rgba(124,58,237,0.35);
-      --text:      #f0f0ff;
-      --muted:     #8888aa;
-      --gold:      #f59e0b;
-      --green:     #10b981;
-      --radius:    14px;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: "Inter", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 99px; }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 60px;
-      background: rgba(10,10,15,0.85);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
-    .logo {
-      font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px;
-      background: linear-gradient(135deg, var(--purple2), var(--purple3));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .logo span { -webkit-text-fill-color: #fff; font-weight: 300; }
-    nav ul { list-style: none; display: flex; gap: 32px; }
-    nav ul a {
-      color: var(--muted); text-decoration: none; font-size: 0.9rem;
-      font-weight: 500; transition: color 0.2s;
-    }
-    nav ul a:hover { color: var(--text); }
-    .nav-cta {
-      background: var(--purple); color: #fff !important;
-      padding: 9px 20px; border-radius: 8px;
-      font-weight: 600 !important; font-size: 0.85rem !important;
-      transition: background 0.2s !important;
-    }
-    .nav-cta:hover { background: var(--purple2) !important; color: #fff !important; }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
-      position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: "";
-      position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
-      width: 800px; height: 800px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(124,58,237,0.18) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.4);
-      color: var(--purple3); padding: 6px 16px; border-radius: 99px;
-      font-size: 0.8rem; font-weight: 600; margin-bottom: 28px;
-      letter-spacing: 0.5px;
-    }
-    .hero-badge::before { content: "●"; font-size: 0.6rem; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-    .hero h1 {
-      font-size: clamp(3rem, 7vw, 6rem);
-      font-weight: 900; line-height: 1.05;
-      letter-spacing: -2px; margin-bottom: 24px;
-    }
-    .hero h1 .grad {
-      background: linear-gradient(135deg, var(--purple2) 0%, var(--purple3) 50%, #e879f9 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .hero p {
-      font-size: 1.15rem; color: var(--muted); max-width: 560px;
-      line-height: 1.7; margin-bottom: 44px;
-    }
-    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--purple), var(--purple2));
-      color: #fff; padding: 14px 32px; border-radius: 10px;
-      font-weight: 700; font-size: 1rem; text-decoration: none;
-      box-shadow: 0 0 32px var(--glow);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 48px var(--glow); }
-    .btn-secondary {
-      background: transparent; color: var(--text);
-      padding: 14px 32px; border-radius: 10px;
-      font-weight: 600; font-size: 1rem; text-decoration: none;
-      border: 1px solid var(--border);
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .btn-secondary:hover { border-color: var(--purple); background: rgba(124,58,237,0.08); }
-
-    .hero-stats {
-      display: flex; gap: 48px; margin-top: 72px;
-      flex-wrap: wrap; justify-content: center;
-    }
-    .stat { text-align: center; }
-    .stat-num {
-      font-size: 2rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--purple2), var(--purple3));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; font-weight: 500; }
-
-    /* ── SECTIONS ── */
-    section { padding: 100px 24px; }
-    .container { max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      text-align: center; color: var(--purple3);
-      font-size: 0.8rem; font-weight: 700; letter-spacing: 2px;
-      text-transform: uppercase; margin-bottom: 16px;
-    }
-    .section-title {
-      text-align: center; font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 800; letter-spacing: -1px; margin-bottom: 16px;
-    }
-    .section-sub {
-      text-align: center; color: var(--muted);
-      font-size: 1rem; max-width: 520px; margin: 0 auto 64px; line-height: 1.7;
-    }
-
-    /* ── FEATURES ── */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-    .feature-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 28px;
-      transition: border-color 0.3s, transform 0.2s;
-    }
-    .feature-card:hover { border-color: var(--purple); transform: translateY(-4px); }
-    .feature-icon {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; margin-bottom: 18px;
-    }
-    .feature-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
-    .feature-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
-
-    /* ── PRICING ── */
-    #pricing { background: var(--bg2); }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px; align-items: start;
-    }
-    .pricing-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 28px 24px;
-      transition: border-color 0.3s, transform 0.2s;
-      position: relative;
-    }
-    .pricing-card:hover { border-color: var(--purple); transform: translateY(-4px); }
-    .pricing-card.featured {
-      border-color: var(--purple);
-      background: linear-gradient(160deg, rgba(124,58,237,0.12), var(--card));
-      box-shadow: 0 0 40px rgba(124,58,237,0.2);
-    }
-    .featured-badge {
-      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--purple), var(--purple2));
-      color: #fff; font-size: 0.7rem; font-weight: 700;
-      padding: 4px 14px; border-radius: 99px; white-space: nowrap;
-      letter-spacing: 0.5px;
-    }
-    .plan-icon { font-size: 1.8rem; margin-bottom: 14px; }
-    .plan-name { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
-    .plan-duration { font-size: 0.8rem; color: var(--muted); margin-bottom: 20px; }
-    .plan-features { list-style: none; margin-bottom: 28px; }
-    .plan-features li {
-      font-size: 0.85rem; color: var(--muted); padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .plan-features li::before { content: "✓"; color: var(--purple3); font-weight: 700; }
-    .plan-features li.no::before { content: "✗"; color: #555; }
-    .plan-features li.no { color: #555; }
-    .plan-btn {
-      display: block; text-align: center; text-decoration: none;
-      padding: 11px; border-radius: 8px; font-weight: 600; font-size: 0.9rem;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .plan-btn-outline {
-      border: 1px solid var(--border); color: var(--text);
-    }
-    .plan-btn-outline:hover { border-color: var(--purple); background: rgba(124,58,237,0.1); }
-    .plan-btn-filled {
-      background: linear-gradient(135deg, var(--purple), var(--purple2));
-      color: #fff; box-shadow: 0 0 20px var(--glow);
-    }
-    .plan-btn-filled:hover { transform: translateY(-1px); box-shadow: 0 0 32px var(--glow); }
-
-    /* ── LEADERBOARD ── */
-    .leaderboard-wrap {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden; max-width: 700px; margin: 0 auto;
-    }
-    .lb-header {
-      background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(124,58,237,0.05));
-      padding: 20px 28px; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .lb-header h3 { font-size: 1rem; font-weight: 700; }
-    .lb-live { font-size: 0.75rem; color: var(--green); font-weight: 600; display: flex; align-items: center; gap: 6px; }
-    .lb-live::before { content:"●"; animation: pulse 2s infinite; }
-    .lb-row {
-      display: flex; align-items: center; gap: 16px;
-      padding: 16px 28px; border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: background 0.2s;
-    }
-    .lb-row:hover { background: rgba(124,58,237,0.06); }
-    .lb-rank { width: 28px; font-size: 0.85rem; font-weight: 700; color: var(--muted); }
-    .lb-rank.gold   { color: #f59e0b; }
-    .lb-rank.silver { color: #9ca3af; }
-    .lb-rank.bronze { color: #b45309; }
-    .lb-name { flex: 1; font-size: 0.9rem; font-weight: 500; }
-    .lb-score {
-      font-size: 0.9rem; font-weight: 700;
-      background: linear-gradient(135deg, var(--purple2), var(--purple3));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .lb-footer {
-      padding: 16px 28px; text-align: center;
-      font-size: 0.82rem; color: var(--muted);
-    }
-    .lb-footer a { color: var(--purple3); text-decoration: none; }
-    .lb-footer a:hover { text-decoration: underline; }
-
-    /* ── DISCORD CTA ── */
-    #discord { background: var(--bg2); }
-    .discord-box {
-      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(124,58,237,0.05));
-      border: 1px solid rgba(124,58,237,0.4);
-      border-radius: 20px; padding: 64px 32px;
-      text-align: center; max-width: 680px; margin: 0 auto;
-    }
-    .discord-icon { font-size: 3.5rem; margin-bottom: 24px; }
-    .discord-box h2 { font-size: 2rem; font-weight: 800; margin-bottom: 14px; }
-    .discord-box p { color: var(--muted); font-size: 1rem; line-height: 1.7; margin-bottom: 32px; }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--bg2); border-top: 1px solid var(--border);
-      padding: 48px 24px 32px;
-    }
-    .footer-inner {
-      max-width: 1100px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 24px;
-    }
-    .footer-logo {
-      font-size: 1.2rem; font-weight: 800;
-      background: linear-gradient(135deg, var(--purple2), var(--purple3));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
-    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-    .footer-links a:hover { color: var(--text); }
-    .footer-copy { color: var(--muted); font-size: 0.8rem; width: 100%; text-align: center; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
-
-    /* ── RESPONSIVE ── */
-    @media(max-width: 768px) {
-      nav { padding: 16px 20px; }
-      nav ul { display: none; }
-      .hero h1 { letter-spacing: -1px; }
-      .hero-stats { gap: 32px; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="logo">Cloz<span>Optimizer</span></div>
-  <ul>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#leaderboard">Leaderboard</a></li>
-    <li><a href="#discord">Community</a></li>
-    <li><a href="#pricing" class="nav-cta">Get License</a></li>
+<canvas id="particles-canvas"></canvas>
+<div class="bg-gradient-overlay"></div>
+
+<div class="page-wrapper">
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">ClozOptimizer</a>
+  <ul class="nav-links">
+    <li><a href="features.html">Features</a></li>
+    <li><a href="store.html">Pricing</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+    <li><a href="changelog.html">Changelog</a></li>
+    <li><a href="https://discord.gg/zBp34yu2hf" target="_blank">Discord</a></li>
+    <li><a href="store.html" class="nav-cta">Get License</a></li>
   </ul>
+  <button class="nav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- DISCORD ID BANNER -->
+<div id="discord-id-banner" class="info-banner" style="display:none;">
+  Your Discord ID has been detected — it will be linked to your purchase automatically.
+</div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">Now Available — v1.0</div>
-  <h1>Your PC.<br/><span class="grad">Fully Optimized.</span></h1>
-  <p>Cloz Optimizer is a powerful Windows optimization tool built for gamers and power users. Boost FPS, clean your system, and benchmark your PC — all in one app.</p>
-  <div class="hero-btns">
-    <a href="#discord" class="btn-primary">📥 Get Download Link</a>
-    <a href="#pricing" class="btn-secondary">💎 Get a License</a>
+  <div class="hero-badge">
+    <span class="pulse-dot"></span> Now Available — v1.0
+  </div>
+  <h1 class="hero-title">Your PC.<br/>Fully Optimized.</h1>
+  <p class="hero-subtitle">Cloz Optimizer is a powerful Windows optimization tool built for gamers and power users. Boost FPS, clean your system, and benchmark your PC — all in one app.</p>
+  <div class="hero-buttons">
+    <a href="https://discord.gg/zBp34yu2hf" class="btn btn-primary btn-lg" target="_blank">Download Now</a>
+    <a href="store.html" class="btn btn-secondary btn-lg">Get a License</a>
   </div>
   <div class="hero-stats">
-    <div class="stat"><div class="stat-num">4</div><div class="stat-label">License Plans</div></div>
-    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Optimizations</div></div>
-    <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Discord Support</div></div>
-    <div class="stat"><div class="stat-num">🏆</div><div class="stat-label">Global Leaderboard</div></div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section id="features">
-  <div class="container">
-    <p class="section-label">Features</p>
-    <h2 class="section-title">Everything your PC needs</h2>
-    <p class="section-sub">From one-click optimizations to deep system tweaks — Cloz Optimizer has you covered.</p>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>One-Click Optimization</h3>
-        <p>Apply pre-built optimization profiles for Gaming, Work, or Balanced modes in a single click. No technical knowledge required.</p>
+    <div class="hero-stat">
+      <div class="hero-stat-value">4</div>
+      <div class="hero-stat-label">License Plans</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value" id="user-count">&#8734;</div>
+      <div class="hero-stat-label">Optimizations</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value">24/7</div>
+      <div class="hero-stat-label">Discord Support</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-value" id="bot-status-hero">
+        <span class="status-indicator status-online" id="bot-status" style="font-size:0.82rem;">
+          <span class="live-dot"></span> Bot Online
+        </span>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>PC Benchmarking</h3>
-        <p>Test your CPU, RAM, and Disk performance with our built-in benchmark engine. See exactly where your PC stands.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🏆</div>
-        <h3>Global Leaderboard</h3>
-        <p>Submit your benchmark score and compete with users worldwide. See how your PC ranks on the global leaderboard.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">⚙️</div>
-        <h3>Process Manager</h3>
-        <p>View and control all running processes. Kill background apps that waste resources and hurt your performance.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔑</div>
-        <h3>Sell.app License System</h3>
-        <p>Purchase instantly via Sell.app. Your license key is auto-generated and delivered to your Discord DMs within seconds.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔄</div>
-        <h3>Automatic Updates</h3>
-        <p>Always stay on the latest version. Cloz Optimizer checks for updates automatically so you never miss improvements.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🖥️</div>
-        <h3>System Info Panel</h3>
-        <p>Get a detailed overview of your hardware — CPU, GPU, RAM, temperatures and more, all in one clean dashboard.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🛡️</div>
-        <h3>HWID Protection</h3>
-        <p>Your license is securely locked to your hardware. Keys can't be shared or stolen — your purchase is protected.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🚀</div>
-        <h3>Early Access (Pro+)</h3>
-        <p>Annual and Lifetime members get access to beta builds and new features before anyone else.</p>
-      </div>
+      <div class="hero-stat-label">Bot Status</div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
-<section id="pricing">
-  <div class="container">
-    <p class="section-label">Pricing</p>
-    <h2 class="section-title">Choose your plan</h2>
-    <p class="section-sub">All paid plans include full access to Cloz Optimizer. Your key is delivered instantly to your Discord DMs after purchase.</p>
-    <div class="pricing-grid">
-
-      <!-- TRIAL -->
-      <div class="pricing-card">
-        <div class="plan-icon">🔰</div>
-        <div class="plan-name">Trial</div>
-        <div class="plan-duration">Free Forever</div>
-        <ul class="plan-features">
-          <li>Core optimization features</li>
-          <li>Basic benchmarking</li>
-          <li class="no">Process manager</li>
-          <li class="no">Leaderboard submission</li>
-          <li class="no">Licensed Lounge</li>
-          <li class="no">Early access</li>
-        </ul>
-        <a href="https://discord.gg/zBp34yu2hf" class="plan-btn plan-btn-outline" target="_blank">Join Discord</a>
-      </div>
-
-      <!-- PRO (1M + 3M) — two buttons, same card -->
-      <div class="pricing-card">
-        <div class="plan-icon">🥈</div>
-        <div class="plan-name">Cloz Pro</div>
-        <div class="plan-duration">1 Month or 3 Months</div>
-        <ul class="plan-features">
-          <li>Everything in Trial</li>
-          <li>Full process manager</li>
-          <li>Leaderboard submission</li>
-          <li>Licensed Lounge access</li>
-          <li class="no">Premium Lounge</li>
-          <li class="no">Early access builds</li>
-        </ul>
-        <!-- data-plan is used by the JS below to append ?discord_id= -->
-        <a href="#"
-           class="plan-btn plan-btn-outline sellapp-btn"
-           data-plan="pro_1m"
-           data-url="https://clozoptimizer.sell.app/product/cloz-pro-1-month"
-           style="margin-bottom: 8px;">
-          Get Pro — 1 Month
-        </a>
-        <a href="#"
-           class="plan-btn plan-btn-outline sellapp-btn"
-           data-plan="pro_3m"
-           data-url="https://clozoptimizer.sell.app/product/cloz-pro-3-months">
-          Get Pro — 3 Months
-        </a>
-      </div>
-
-      <!-- ANNUAL (featured) -->
-      <div class="pricing-card featured">
-        <div class="featured-badge">⭐ MOST POPULAR</div>
-        <div class="plan-icon">🥇</div>
-        <div class="plan-name">Cloz Elite</div>
-        <div class="plan-duration">Annual — 12 Months</div>
-        <ul class="plan-features">
-          <li>Everything in Pro</li>
-          <li>Premium Lounge access</li>
-          <li>Early access builds</li>
-          <li>Feature voting</li>
-          <li>Priority support</li>
-          <li class="no">Lifetime Vault</li>
-        </ul>
-        <a href="#"
-           class="plan-btn plan-btn-filled sellapp-btn"
-           data-plan="annual"
-           data-url="https://clozoptimizer.sell.app/product/cloz-elite-12-months">
-          Get Annual
-        </a>
-      </div>
-
-      <!-- LIFETIME -->
-      <div class="pricing-card">
-        <div class="plan-icon">💎</div>
-        <div class="plan-name">Cloz Infinity</div>
-        <div class="plan-duration">Pay Once, Own Forever</div>
-        <ul class="plan-features">
-          <li>Everything in Annual</li>
-          <li>Lifetime Vault access</li>
-          <li>Exclusive drops & perks</li>
-          <li>Direct dev feedback line</li>
-          <li>Highest priority support</li>
-          <li>Never pay again</li>
-        </ul>
-        <a href="#"
-           class="plan-btn plan-btn-filled sellapp-btn"
-           data-plan="lifetime"
-           data-url="https://clozoptimizer.sell.app/product/cloz-infinity-lifetime">
-          Get Lifetime
-        </a>
-      </div>
-
+<!-- FEATURES PREVIEW -->
+<section class="section section-center" id="features">
+  <span class="section-label">Features</span>
+  <h2 class="section-title">Everything your PC needs</h2>
+  <p class="section-subtitle">From one-click optimizations to deep system tweaks — Cloz Optimizer has you covered.</p>
+  <div class="features-grid stagger-children">
+    <div class="glass-card feature-card reveal">
+      <div class="feature-icon">&#9889;</div>
+      <h3>One-Click Optimization</h3>
+      <p>Apply pre-built optimization profiles for Gaming, Work, or Balanced modes in a single click.</p>
     </div>
-
-    <!-- Tip shown under pricing cards -->
-    <p style="text-align:center; color:var(--muted); font-size:0.82rem; margin-top:28px;">
-      💡 After purchase, your license key is sent to your Discord DMs automatically. Make sure your Discord DMs are open.
-    </p>
+    <div class="glass-card feature-card reveal">
+      <div class="feature-icon">&#128202;</div>
+      <h3>PC Benchmarking</h3>
+      <p>Test your CPU, RAM, and Disk performance with our built-in benchmark engine.</p>
+    </div>
+    <div class="glass-card feature-card reveal">
+      <div class="feature-icon">&#127942;</div>
+      <h3>Global Leaderboard</h3>
+      <p>Submit your benchmark score and compete with users worldwide on the global leaderboard.</p>
+    </div>
+    <div class="glass-card feature-card reveal">
+      <div class="feature-icon">&#9881;&#65039;</div>
+      <h3>Process Manager</h3>
+      <p>View and control all running processes. Kill background apps that waste resources.</p>
+    </div>
+    <div class="glass-card feature-card reveal">
+      <div class="feature-icon">&#128273;</div>
+      <h3>Sell.app License System</h3>
+      <p>Purchase instantly via Sell.app. License key auto-delivered to your Discord DMs.</p>
+    </div>
+    <div class="glass-card feature-card reveal">
+      <div class="feature-icon">&#128260;</div>
+      <h3>Automatic Updates</h3>
+      <p>Always stay on the latest version. Cloz Optimizer checks for updates automatically.</p>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:40px;">
+    <a href="features.html" class="btn btn-outline">View All Features &rarr;</a>
   </div>
 </section>
 
-<!-- LEADERBOARD -->
-<section id="leaderboard">
-  <div class="container">
-    <p class="section-label">Leaderboard</p>
-    <h2 class="section-title">How does your PC rank?</h2>
-    <p class="section-sub">Run a benchmark inside Cloz Optimizer and submit your score to compete globally.</p>
-    <div class="leaderboard-wrap">
-      <div class="lb-header">
-        <h3>🏆 Global Benchmark Leaderboard</h3>
-        <span class="lb-live">Live</span>
+<!-- PRICING PREVIEW -->
+<section class="section section-center" id="pricing" style="background:var(--bg2);">
+  <span class="section-label">Pricing</span>
+  <h2 class="section-title">Choose your plan</h2>
+  <p class="section-subtitle">All paid plans include full access. Your key is delivered instantly to your Discord DMs.</p>
+  <div class="pricing-grid stagger-children">
+
+    <div class="glass-card pricing-card reveal">
+      <h3>Trial</h3>
+      <div class="pricing-price">Free Forever</div>
+      <ul class="pricing-features">
+        <li><span class="check">&#10003;</span> Core optimization</li>
+        <li><span class="check">&#10003;</span> Basic benchmarking</li>
+        <li><span class="cross">&#10007;</span> Process manager</li>
+        <li><span class="cross">&#10007;</span> Leaderboard</li>
+      </ul>
+      <a href="https://discord.gg/zBp34yu2hf" class="btn btn-outline btn-sm" target="_blank">Join Discord</a>
+    </div>
+
+    <div class="glass-card pricing-card reveal">
+      <h3>Cloz Pro</h3>
+      <div class="pricing-price">1 Month or 3 Months</div>
+      <ul class="pricing-features">
+        <li><span class="check">&#10003;</span> Everything in Trial</li>
+        <li><span class="check">&#10003;</span> Full process manager</li>
+        <li><span class="check">&#10003;</span> Leaderboard</li>
+        <li><span class="check">&#10003;</span> Licensed Lounge</li>
+      </ul>
+      <a href="store.html" class="btn btn-outline btn-sm">View Plans</a>
+    </div>
+
+    <div class="glass-card pricing-card featured reveal">
+      <div class="pricing-badge">MOST POPULAR</div>
+      <h3>Cloz Elite</h3>
+      <div class="pricing-price">Annual — 12 Months</div>
+      <ul class="pricing-features">
+        <li><span class="check">&#10003;</span> Everything in Pro</li>
+        <li><span class="check">&#10003;</span> Premium Lounge</li>
+        <li><span class="check">&#10003;</span> Early access builds</li>
+        <li><span class="check">&#10003;</span> Priority support</li>
+      </ul>
+      <a href="store.html" class="btn btn-primary btn-sm">Get Elite</a>
+    </div>
+
+    <div class="glass-card pricing-card reveal">
+      <h3>Cloz Infinity</h3>
+      <div class="pricing-price">Pay Once, Own Forever</div>
+      <ul class="pricing-features">
+        <li><span class="check">&#10003;</span> Everything in Annual</li>
+        <li><span class="check">&#10003;</span> Lifetime Vault</li>
+        <li><span class="check">&#10003;</span> Exclusive drops</li>
+        <li><span class="check">&#10003;</span> Direct dev feedback</li>
+      </ul>
+      <a href="store.html" class="btn btn-primary btn-sm">Get Lifetime</a>
+    </div>
+
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:0.82rem;margin-top:28px;">
+    After purchase, your license key is sent to your Discord DMs automatically.
+  </p>
+</section>
+
+<!-- LEADERBOARD PREVIEW -->
+<section class="section section-center" id="leaderboard">
+  <span class="section-label">Leaderboard</span>
+  <h2 class="section-title">How does your PC rank?</h2>
+  <p class="section-subtitle">Run a benchmark inside Cloz Optimizer and submit your score to compete globally.</p>
+  <div class="glass-card reveal" style="max-width:800px;margin:0 auto;padding:0;overflow:hidden;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid var(--border);">
+      <h3 style="font-size:1rem;font-weight:700;">Global Benchmark Leaderboard</h3>
+      <span class="live-badge"><span class="live-dot"></span> Live</span>
+    </div>
+    <table class="leaderboard-table" style="margin:0;">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>User</th>
+          <th>Score</th>
+          <th class="score-breakdown">Breakdown</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="lb-body-home">
+        <tr><td class="rank-cell rank-gold">&#129351;</td><td>Submit your score!</td><td class="score-cell">—</td><td class="score-breakdown">—</td><td class="date-cell">—</td></tr>
+        <tr><td class="rank-cell rank-silver">&#129352;</td><td>—</td><td class="score-cell">—</td><td class="score-breakdown">—</td><td class="date-cell">—</td></tr>
+        <tr><td class="rank-cell rank-bronze">&#129353;</td><td>—</td><td class="score-cell">—</td><td class="score-breakdown">—</td><td class="date-cell">—</td></tr>
+        <tr><td class="rank-cell">#4</td><td>—</td><td class="score-cell">—</td><td class="score-breakdown">—</td><td class="date-cell">—</td></tr>
+        <tr><td class="rank-cell">#5</td><td>—</td><td class="score-cell">—</td><td class="score-breakdown">—</td><td class="date-cell">—</td></tr>
+      </tbody>
+    </table>
+    <div style="padding:16px 28px;text-align:center;font-size:0.82rem;color:var(--muted);">
+      <a href="leaderboard.html" style="color:var(--purple3);">View full leaderboard &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section-center" id="faq">
+  <span class="section-label">FAQ</span>
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <p class="section-subtitle">Got questions? We've got answers.</p>
+  <div class="faq-list reveal">
+    <div class="faq-item">
+      <button class="faq-question">
+        What is Cloz Optimizer?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">Cloz Optimizer is a Windows optimization tool designed for gamers and power users. It helps you boost FPS, clean your system, manage processes, and benchmark your PC performance — all from a single application.</div>
       </div>
-      <div id="lb-body">
-        <!-- Populated by JS from the /leaderboard API -->
-        <div class="lb-row">
-          <div class="lb-rank gold">#1</div>
-          <div class="lb-name">Submit your score to claim the top!</div>
-          <div class="lb-score">—</div>
-        </div>
-        <div class="lb-row"><div class="lb-rank silver">#2</div><div class="lb-name">—</div><div class="lb-score">—</div></div>
-        <div class="lb-row"><div class="lb-rank bronze">#3</div><div class="lb-name">—</div><div class="lb-score">—</div></div>
-        <div class="lb-row"><div class="lb-rank">#4</div><div class="lb-name">—</div><div class="lb-score">—</div></div>
-        <div class="lb-row"><div class="lb-rank">#5</div><div class="lb-name">—</div><div class="lb-score">—</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        Is it free to use?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">Yes! The Trial version is completely free and includes core optimization features and basic benchmarking. For advanced features like the process manager, leaderboard submission, and lounge access, you can upgrade to a paid plan.</div>
       </div>
-      <div class="lb-footer">
-        Leaderboard updates live via Cloz Optimizer. <a href="https://discord.gg/zBp34yu2hf">Join Discord</a> to submit your score.
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        How do I get my license key?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">After purchasing through Sell.app, your license key is automatically delivered to your Discord DMs by the Cloz Bot. Make sure your Discord DMs are open and you've joined our server.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        Can I transfer my license to another PC?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">Licenses are tied to your hardware (HWID) for security. If you need to transfer your license to a new PC, contact support on Discord and we'll help you with the reset.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        How does the leaderboard work?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">Run the built-in benchmark in Cloz Optimizer to test your CPU, RAM, and Disk performance. If you have a Pro plan or above, you can submit your score to the global leaderboard and see how your PC ranks against other users.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">
+        Is Cloz Optimizer safe to use?
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">Absolutely. Cloz Optimizer only applies well-known Windows optimization tweaks and doesn't modify any critical system files. All changes can be reverted. The app is regularly updated and tested.</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- DISCORD CTA -->
-<section id="discord">
-  <div class="container">
-    <div class="discord-box">
-      <div class="discord-icon">💬</div>
-      <h2>Join the Community</h2>
-      <p>Get your download link, activate your license, get support, enter giveaways, and connect with other Cloz Optimizer users — all on our Discord server.</p>
-      <a href="https://discord.gg/zBp34yu2hf" class="btn-primary" target="_blank">Join Discord Server</a>
+<section class="discord-section" id="discord" style="background:var(--bg2);">
+  <div class="glass-card discord-box reveal">
+    <div class="discord-icon">&#128172;</div>
+    <h2>Join the Community</h2>
+    <p>Get your download link, activate your license, get support, enter giveaways, and connect with other Cloz Optimizer users.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://discord.gg/zBp34yu2hf" class="btn btn-primary" target="_blank">Join Discord Server</a>
+      <a href="store.html" class="btn btn-secondary">View Store</a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
+<footer class="footer">
   <div class="footer-inner">
-    <div class="footer-logo">ClozOptimizer</div>
-    <div class="footer-links">
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#leaderboard">Leaderboard</a>
-      <a href="https://discord.gg/zBp34yu2hf" target="_blank">Discord</a>
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">ClozOptimizer</a>
+      <p>A powerful Windows optimization tool built for gamers and power users.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="store.html">Pricing</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Community</h4>
+      <ul>
+        <li><a href="https://discord.gg/zBp34yu2hf" target="_blank">Discord</a></li>
+        <li><a href="https://sell.app" target="_blank">Sell.app Store</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
     </div>
   </div>
-  <div class="footer-inner">
-    <p class="footer-copy">© 2026 Cloz Optimizer. All rights reserved. Built with ❤️ for the community.</p>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Cloz Optimizer. All rights reserved.</p>
+    <div class="footer-socials">
+      <a href="https://discord.gg/zBp34yu2hf" target="_blank" title="Discord">&#128172;</a>
+    </div>
   </div>
 </footer>
 
+</div><!-- /page-wrapper -->
+
+<script src="main.js"></script>
 <script>
-  // ── Sell.app button wiring ──────────────────────────────────────────────────
-  // If the user arrived from Discord with ?discord_id=... in the URL,
-  // we automatically append it to every Sell.app checkout link so the
-  // webhook can identify who made the purchase without them typing anything.
-  (function () {
-    const params     = new URLSearchParams(window.location.search);
-    const discordId  = params.get("discord_id") || "";
+  // ── Config ─────────────────────────────────────────────────────────────────
+  const BOT_API_URL = "https://cloz-bot-production.up.railway.app/";
 
-    document.querySelectorAll(".sellapp-btn").forEach(function (btn) {
-      btn.addEventListener("click", function (e) {
-        e.preventDefault();
-        let url = btn.getAttribute("data-url");
-        if (!url) return;
+  // ── Leaderboard (homepage preview — top 5) ─────────────────────────────────
+  initLeaderboard('lb-body-home', BOT_API_URL + '/leaderboard', 60000);
 
-        // Append discord_id as a query param if we have it
-        // Sell.app will include this in the checkout custom fields (if configured)
-        if (discordId) {
-          const sep = url.includes("?") ? "&" : "?";
-          url = url + sep + "discord_id=" + encodeURIComponent(discordId);
-        }
+  // ── Status badge ───────────────────────────────────────────────────────────
+  initStatusBadge(BOT_API_URL + '/status');
 
-        window.open(url, "_blank", "noopener,noreferrer");
-      });
-    });
+  // ── Download / User count ──────────────────────────────────────────────────
+  (async function() {
+    try {
+      const res = await fetch(BOT_API_URL + '/stats');
+      const data = await res.json();
+      const el = document.getElementById('user-count');
+      if (el && data.downloads) el.textContent = Number(data.downloads).toLocaleString();
+      if (el && data.users) el.textContent = Number(data.users).toLocaleString();
+    } catch(e) { /* keep default */ }
   })();
 
-  // ── Live leaderboard fetch ──────────────────────────────────────────────────
-  // Replace the placeholder rows with real data from the bot's /leaderboard endpoint.
-  // Update BOT_API_URL to your Railway backend URL.
-  (function () {
-    const BOT_API_URL = "https://YOUR_BOT_BACKEND_URL"; // e.g. https://cloz-bot.up.railway.app
-
-    const medals     = ["gold", "silver", "bronze"];
-    const lbBody     = document.getElementById("lb-body");
-
-    async function loadLeaderboard() {
-      try {
-        const res  = await fetch(BOT_API_URL + "/leaderboard");
-        const data = await res.json();
-        if (!data.ok || !data.leaderboard || data.leaderboard.length === 0) return;
-
-        lbBody.innerHTML = "";
-        data.leaderboard.slice(0, 10).forEach(function (entry) {
-          const row       = document.createElement("div");
-          row.className   = "lb-row";
-          const rankClass = medals[entry.rank - 1] || "";
-          row.innerHTML   =
-            '<div class="lb-rank ' + rankClass + '">#' + entry.rank + '</div>' +
-            '<div class="lb-name">'  + escapeHtml(entry.username) + '</div>'  +
-            '<div class="lb-score">' + entry.score + '</div>';
-          lbBody.appendChild(row);
-        });
-      } catch (err) {
-        // Silent fail — keep the placeholder rows
+  // ── Sell.app button wiring ─────────────────────────────────────────────────
+  document.querySelectorAll('.sellapp-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      let url = btn.getAttribute('data-url');
+      if (!url) return;
+      if (url.includes('REPLACE_WITH')) {
+        alert('Store link not configured yet. Please check back soon or contact us on Discord.');
+        return;
       }
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-    }
-
-    loadLeaderboard();
-    setInterval(loadLeaderboard, 60000); // refresh every 60s
-  })();
+      url = appendDiscordId(url);
+      window.open(url, '_blank', 'noopener,noreferrer');
+    });
+  });
 </script>
 
 </body>

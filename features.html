@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Features — Cloz Optimizer</title>
+  <meta name="description" content="Discover everything Cloz Optimizer can do. One-click optimization, benchmarking, leaderboards, Discord integration, themes, and more."/>
+  <meta property="og:title" content="Features — Cloz Optimizer"/>
+  <meta property="og:description" content="One-click optimization, PC benchmarking, global leaderboard, process manager, and more. See all Cloz Optimizer features."/>
+  <meta property="og:type" content="website"/>
+  <meta name="theme-color" content="#7c3aed"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+<div class="bg-gradient-overlay"></div>
+
+<div class="page-wrapper">
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">ClozOptimizer</a>
+  <ul class="nav-links">
+    <li><a href="features.html" class="active">Features</a></li>
+    <li><a href="store.html">Pricing</a></li>
+    <li><a href="leaderboard.html">Leaderboard</a></li>
+    <li><a href="changelog.html">Changelog</a></li>
+    <li><a href="https://discord.gg/zBp34yu2hf" target="_blank">Discord</a></li>
+    <li><a href="store.html" class="nav-cta">Get License</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="min-height:auto;padding:140px 40px 60px;">
+  <h1 class="hero-title" style="font-size:clamp(2rem,5vw,3.2rem);">All Features</h1>
+  <p class="hero-subtitle">Everything you need to optimize, benchmark, and dominate. Here's what Cloz Optimizer brings to the table.</p>
+</section>
+
+<!-- TABS + FEATURES -->
+<section class="section" style="padding-top:0;">
+
+  <!-- Tab navigation -->
+  <div class="tabs" style="max-width:1100px;margin:0 auto 32px;justify-content:center;">
+    <button class="tab-btn active" data-tab="all">All Features</button>
+    <button class="tab-btn" data-tab="optimization">Optimization</button>
+    <button class="tab-btn" data-tab="benchmark">Benchmarking</button>
+    <button class="tab-btn" data-tab="integration">Integrations</button>
+    <button class="tab-btn" data-tab="security">Security</button>
+  </div>
+
+  <!-- All features grid -->
+  <div class="features-grid stagger-children" id="features-grid" style="max-width:1100px;margin:0 auto;">
+
+    <!-- Optimization -->
+    <div class="glass-card feature-card reveal" data-category="optimization">
+      <div class="feature-icon">&#9889;</div>
+      <h3>One-Click Optimization</h3>
+      <p>Apply pre-built optimization profiles for Gaming, Work, or Balanced modes in a single click. No technical knowledge required — just pick your mode and go.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="optimization">
+      <div class="feature-icon">&#127918;</div>
+      <h3>Gaming Mode</h3>
+      <p>Maximize FPS by disabling unnecessary services, adjusting power plans, and clearing RAM. Designed specifically for competitive and casual gaming.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="optimization">
+      <div class="feature-icon">&#9881;&#65039;</div>
+      <h3>Process Manager</h3>
+      <p>View and control all running processes. Kill background apps that waste CPU and RAM. See resource usage at a glance with priority controls.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="optimization">
+      <div class="feature-icon">&#128187;</div>
+      <h3>System Info Panel</h3>
+      <p>Get a detailed overview of your hardware — CPU, GPU, RAM, disk drives, temperatures and more, all in one clean dashboard.</p>
+    </div>
+
+    <!-- Benchmarking -->
+    <div class="glass-card feature-card reveal" data-category="benchmark">
+      <div class="feature-icon">&#128202;</div>
+      <h3>PC Benchmarking</h3>
+      <p>Test your CPU, RAM, and Disk performance with our built-in benchmark engine. Get detailed scores and see exactly where your PC stands.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="benchmark">
+      <div class="feature-icon">&#127942;</div>
+      <h3>Global Leaderboard</h3>
+      <p>Submit your benchmark score and compete with users worldwide. See how your PC ranks on the global leaderboard with CPU, RAM, and Disk breakdowns.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="benchmark">
+      <div class="feature-icon">&#128200;</div>
+      <h3>Score Breakdown</h3>
+      <p>See individual CPU, RAM, and Disk scores for a detailed understanding of your system's strengths and where you can improve.</p>
+    </div>
+
+    <!-- Integrations -->
+    <div class="glass-card feature-card reveal" data-category="integration">
+      <div class="feature-icon">&#128172;</div>
+      <h3>Discord Integration</h3>
+      <p>License delivery, leaderboard submissions, support — everything goes through Discord. Our bot handles it all automatically.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="integration">
+      <div class="feature-icon">&#128273;</div>
+      <h3>Sell.app License System</h3>
+      <p>Purchase instantly via Sell.app. Your license key is auto-generated and delivered to your Discord DMs within seconds. Zero friction.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="integration">
+      <div class="feature-icon">&#128260;</div>
+      <h3>Automatic Updates</h3>
+      <p>Always stay on the latest version. Cloz Optimizer checks for updates automatically on startup so you never miss improvements or patches.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="integration">
+      <div class="feature-icon">&#127912;</div>
+      <h3>Themes</h3>
+      <p>Customize the look and feel of Cloz Optimizer. Choose from built-in themes or create your own color scheme to match your setup.</p>
+    </div>
+
+    <!-- Security -->
+    <div class="glass-card feature-card reveal" data-category="security">
+      <div class="feature-icon">&#128737;&#65039;</div>
+      <h3>HWID Protection</h3>
+      <p>Your license is securely locked to your hardware. Keys can't be shared or stolen — your purchase is fully protected against unauthorized use.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="security">
+      <div class="feature-icon">&#128640;</div>
+      <h3>Early Access (Pro+)</h3>
+      <p>Annual and Lifetime members get access to beta builds and new features before anyone else. Be first to try the latest optimizations.</p>
+    </div>
+
+    <div class="glass-card feature-card reveal" data-category="security">
+      <div class="feature-icon">&#128272;</div>
+      <h3>Secure Checkout</h3>
+      <p>All purchases go through Sell.app's secure payment processing. Your payment information is never stored by Cloz Optimizer.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="discord-section" style="background:var(--bg2);">
+  <div class="glass-card discord-box reveal">
+    <div class="discord-icon">&#128640;</div>
+    <h2>Ready to optimize?</h2>
+    <p>Download Cloz Optimizer for free or grab a license to unlock all features.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://discord.gg/zBp34yu2hf" class="btn btn-primary" target="_blank">Download Now</a>
+      <a href="store.html" class="btn btn-secondary">View Plans</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">ClozOptimizer</a>
+      <p>A powerful Windows optimization tool built for gamers and power users.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="store.html">Pricing</a></li>
+        <li><a href="changelog.html">Changelog</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Community</h4>
+      <ul>
+        <li><a href="https://discord.gg/zBp34yu2hf" target="_blank">Discord</a></li>
+        <li><a href="https://sell.app" target="_blank">Sell.app Store</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Cloz Optimizer. All rights reserved.</p>
+    <div class="footer-socials">
+      <a href="https://discord.gg/zBp34yu2hf" target="_blank" title="Discord">&#128172;</a>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /page-wrapper -->
+
+<script src="main.js"></script>
+<script>
+  // ── Feature Tab Filtering ──────────────────────────────────────────────────
+  (function() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const cards = document.querySelectorAll('.feature-card[data-category]');
+
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        tabs.forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+
+        const category = tab.getAttribute('data-tab');
+
+        cards.forEach(function(card) {
+          if (category === 'all' || card.getAttribute('data-category') === category) {
+            card.style.display = '';
+            card.classList.add('visible');
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
