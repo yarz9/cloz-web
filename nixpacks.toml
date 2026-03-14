@@ -1,8 +1,5 @@
 [phases.setup]
-nixPkgs = ["nodejs_20"]
-
-[phases.install]
-cmds = ["npm install"]
+nixPkgs = ["php82", "php82Extensions.pdo", "php82Extensions.mbstring"]
 
 [start]
-cmd = "node_modules/.bin/serve . --single"
+cmd = "php -S 0.0.0.0:$PORT"
