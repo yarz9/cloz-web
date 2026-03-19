@@ -336,13 +336,13 @@
 <script src="main.js"></script>
 <script>
   // ── Config ─────────────────────────────────────────────────────────────────
-  const BOT_API_URL = "https://cloz-bot-production.up.railway.app/";
+  const BOT_API_URL = "https://cloz-bot-production.up.railway.app";
 
   // ── Leaderboard (homepage preview — top 5) ─────────────────────────────────
   initLeaderboard('lb-body-home', BOT_API_URL + '/leaderboard', 60000);
 
   // ── Status badge ───────────────────────────────────────────────────────────
-  initStatusBadge(BOT_API_URL + '/status');
+  initStatusBadge(BOT_API_URL + '/stats');
 
   // ── Download / User count ──────────────────────────────────────────────────
   (async function() {
@@ -350,8 +350,8 @@
       const res = await fetch(BOT_API_URL + '/stats');
       const data = await res.json();
       const el = document.getElementById('user-count');
+      if (el && data.total) el.textContent = Number(data.total).toLocaleString();
       if (el && data.downloads) el.textContent = Number(data.downloads).toLocaleString();
-      if (el && data.users) el.textContent = Number(data.users).toLocaleString();
     } catch(e) { /* keep default */ }
   })();
 

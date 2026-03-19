@@ -198,10 +198,10 @@ function initLeaderboard(containerId, apiUrl, refreshInterval) {
         const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
         const username = escapeHTML(entry.username || 'Unknown');
         const score = entry.score != null ? Number(entry.score).toLocaleString() : '—';
-        const cpu = entry.cpu_score != null ? Number(entry.cpu_score).toLocaleString() : '—';
-        const ram = entry.ram_score != null ? Number(entry.ram_score).toLocaleString() : '—';
-        const disk = entry.disk_score != null ? Number(entry.disk_score).toLocaleString() : '—';
-        const date = entry.submitted_at ? new Date(entry.submitted_at).toLocaleDateString() : '—';
+        const cpu = (entry.cpu_score ?? entry.cpuscore) != null ? Number(entry.cpu_score ?? entry.cpuscore).toLocaleString() : '—';
+        const ram = (entry.ram_score ?? entry.ramscore) != null ? Number(entry.ram_score ?? entry.ramscore).toLocaleString() : '—';
+        const disk = (entry.disk_score ?? entry.diskscore) != null ? Number(entry.disk_score ?? entry.diskscore).toLocaleString() : '—';
+        const date = (entry.submitted_at || entry.submittedat) ? new Date(entry.submitted_at || entry.submittedat).toLocaleDateString() : '—';
 
         return `<tr>
           <td class="rank-cell ${rankClass}">${medal}</td>
@@ -240,7 +240,7 @@ function initStatusBadge(apiUrl) {
     try {
       const res = await fetch(apiUrl, { signal: AbortSignal.timeout(5000) });
       const data = await res.json();
-      const online = data.online || data.status === 'online' || data.ok;
+      const online = data.status === 'online' || data.ok || (typeof data.online === 'number' ? data.online > 0 : !!data.online);
       badge.className = 'status-indicator ' + (online ? 'status-online' : 'status-offline');
       badge.innerHTML = online
         ? '<span class="live-dot"></span> Bot Online'
