@@ -1,5 +1,8 @@
 [phases.setup]
-nixPkgs = ["php82", "php82Extensions.pdo", "php82Extensions.mbstring"]
+nixPkgs = ["nodejs_18", "npm"]
+
+[phases.install]
+cmds = ["npm install"]
 
 [start]
-cmd = "php -S 0.0.0.0:$PORT"
+cmd = "npx serve . --single --listen tcp://0.0.0.0:${PORT:-3000}"

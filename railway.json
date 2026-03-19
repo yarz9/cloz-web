@@ -1,4 +1,4 @@
 {
   "build": { "builder": "NIXPACKS" },
-  "deploy": { "startCommand": "npx serve . --single" }
+  "deploy": { "startCommand": "npx serve . --single --listen tcp://0.0.0.0:$PORT" }
 }
