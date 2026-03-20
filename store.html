@@ -43,94 +43,148 @@
 </div>
 
 <!-- HERO -->
-<section class="hero" style="min-height:auto;padding:140px 40px 60px;">
-  <h1 class="hero-title" style="font-size:clamp(2rem,5vw,3.2rem);">Pick Your Plan</h1>
-  <p class="hero-subtitle">All plans include the full Cloz Optimizer app. Your license key is delivered to your Discord DMs instantly after purchase.</p>
-  <div class="live-badge" style="margin-top:8px;">
-    <span class="live-dot"></span> Instant delivery via Discord DM
+<section class="hero store-hero-section" style="text-align:center;">
+  <div class="store-hero-glow"></div>
+  <span class="section-label">Pricing</span>
+  <h1 class="hero-title" style="font-size:clamp(2.2rem,5vw,3.6rem);margin-bottom:18px;">
+    Pick Your Plan
+  </h1>
+  <p class="hero-subtitle" style="max-width:480px;">
+    All plans include the full Cloz Optimizer app. Your license key is delivered to your Discord DMs instantly after purchase.
+  </p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:16px;">
+    <div class="live-badge"><span class="live-dot"></span> Instant Delivery</div>
+    <div class="trust-pill">&#128274; Secured by Sell.app</div>
+    <div class="trust-pill">&#128172; Discord Support</div>
   </div>
 </section>
 
 <!-- PLAN CARDS -->
-<section class="section" style="padding-top:20px;">
-  <div class="pricing-grid stagger-children" style="max-width:1100px;margin:0 auto;">
+<section class="section" style="padding-top:0;padding-bottom:80px;">
+  <div class="pricing-grid-v2 stagger-children">
 
     <!-- TRIAL -->
-    <div class="glass-card pricing-card reveal">
-      <h3>Trial</h3>
-      <div class="pricing-price">Free — No license required</div>
-      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:20px;line-height:1.6;">Try Cloz Optimizer with core optimization features. No purchase needed — just download and go.</p>
-      <ul class="pricing-features">
-        <li><span class="check">&#10003;</span> Core optimizations</li>
-        <li><span class="check">&#10003;</span> Basic benchmarking</li>
-        <li><span class="cross">&#10007;</span> Process manager</li>
-        <li><span class="cross">&#10007;</span> Leaderboard submission</li>
-        <li><span class="cross">&#10007;</span> Licensed Lounge</li>
-        <li><span class="cross">&#10007;</span> Early access</li>
+    <div class="glass-card pricing-card-v2 reveal">
+      <div class="pcard-top-bar pcard-bar-muted"></div>
+      <div class="pcard-icon pcard-icon-free">&#127919;</div>
+      <h3 class="pcard-name">Trial</h3>
+      <div class="pcard-price-label">Free Forever</div>
+      <p class="pcard-desc">Try Cloz Optimizer risk-free. Core optimizations included — no purchase required.</p>
+      <ul class="pcard-features">
+        <li class="feat-yes">Core optimizations</li>
+        <li class="feat-yes">Basic benchmarking</li>
+        <li class="feat-no">Process manager</li>
+        <li class="feat-no">Leaderboard submission</li>
+        <li class="feat-no">Licensed Lounge</li>
+        <li class="feat-no">Early access builds</li>
       </ul>
-      <a href="https://discord.gg/zBp34yu2hf" target="_blank" class="btn btn-outline btn-sm" style="width:100%;justify-content:center;">Join Discord to Download</a>
+      <a href="https://discord.gg/zBp34yu2hf" target="_blank" class="btn btn-outline btn-sm pcard-btn">
+        Join Discord to Download
+      </a>
     </div>
 
     <!-- PRO -->
-    <div class="glass-card pricing-card reveal">
-      <h3>Cloz Pro</h3>
-      <div class="pricing-price">1 Month or 3 Months</div>
-      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:20px;line-height:1.6;">Level up your PC with all premium optimizations, FPS boosts, and auto-tweaks. Perfect for competitive players.</p>
-      <ul class="pricing-features">
-        <li><span class="check">&#10003;</span> Everything in Trial</li>
-        <li><span class="check">&#10003;</span> Full process manager</li>
-        <li><span class="check">&#10003;</span> Leaderboard submission</li>
-        <li><span class="check">&#10003;</span> Licensed Lounge access</li>
-        <li><span class="cross">&#10007;</span> Premium Lounge</li>
-        <li><span class="cross">&#10007;</span> Early access builds</li>
+    <div class="glass-card pricing-card-v2 reveal">
+      <div class="pcard-top-bar pcard-bar-purple"></div>
+      <div class="pcard-icon pcard-icon-pro">&#9889;</div>
+      <h3 class="pcard-name">Cloz Pro</h3>
+      <div class="pcard-price-label">Monthly Plan</div>
+      <p class="pcard-desc">Level up with all premium optimizations, FPS boosts, and full feature access for competitive players.</p>
+      <ul class="pcard-features">
+        <li class="feat-yes">Everything in Trial</li>
+        <li class="feat-yes">Full process manager</li>
+        <li class="feat-yes">Leaderboard submission</li>
+        <li class="feat-yes">Licensed Lounge access</li>
+        <li class="feat-no">Premium Lounge</li>
+        <li class="feat-no">Early access builds</li>
       </ul>
-      <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="pcard-btn-group">
         <button class="btn btn-outline btn-sm sellapp-btn" data-url="https://clozoptimizer.sell.app/product/cloz-pro-1-month" style="width:100%;justify-content:center;">
           Buy — 1 Month
         </button>
-        <button class="btn btn-outline btn-sm sellapp-btn" data-url="https://clozoptimizer.sell.app/product/cloz-pro-3-months" style="width:100%;justify-content:center;">
+        <button class="btn btn-secondary btn-sm sellapp-btn" data-url="https://clozoptimizer.sell.app/product/cloz-pro-3-months" style="width:100%;justify-content:center;">
           Buy — 3 Months
         </button>
       </div>
     </div>
 
-    <!-- ANNUAL (featured) -->
-    <div class="glass-card pricing-card featured reveal">
-      <div class="pricing-badge">MOST POPULAR</div>
-      <h3>Cloz Elite</h3>
-      <div class="pricing-price">Annual — 12 Months</div>
-      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:20px;line-height:1.6;">Go full sweat mode with a full year of maximum performance, priority updates, and all future optimizations.</p>
-      <ul class="pricing-features">
-        <li><span class="check">&#10003;</span> Everything in Pro</li>
-        <li><span class="check">&#10003;</span> Premium Lounge access</li>
-        <li><span class="check">&#10003;</span> Early access builds</li>
-        <li><span class="check">&#10003;</span> Feature voting</li>
-        <li><span class="check">&#10003;</span> Priority support</li>
-        <li><span class="cross">&#10007;</span> Lifetime Vault</li>
+    <!-- ELITE (featured) -->
+    <div class="glass-card pricing-card-v2 pricing-card-elite reveal">
+      <div class="pcard-top-bar pcard-bar-gradient"></div>
+      <div class="pcard-badge">&#9733; Most Popular</div>
+      <div class="pcard-icon pcard-icon-elite">&#128081;</div>
+      <h3 class="pcard-name">Cloz Elite</h3>
+      <div class="pcard-price-label">Annual — 12 Months</div>
+      <p class="pcard-desc">Go full sweat mode — a full year of maximum performance, priority updates, and every future optimization.</p>
+      <ul class="pcard-features">
+        <li class="feat-yes">Everything in Pro</li>
+        <li class="feat-yes">Premium Lounge access</li>
+        <li class="feat-yes">Early access builds</li>
+        <li class="feat-yes">Feature voting rights</li>
+        <li class="feat-yes">Priority support</li>
+        <li class="feat-no">Lifetime Vault</li>
       </ul>
-      <button class="btn btn-primary btn-sm sellapp-btn" data-url="https://clozoptimizer.sell.app/product/cloz-elite-12-months" style="width:100%;justify-content:center;">
+      <button class="btn btn-primary btn-sm sellapp-btn pcard-btn" data-url="https://clozoptimizer.sell.app/product/cloz-elite-12-months">
         Buy Annual
       </button>
     </div>
 
-    <!-- LIFETIME -->
-    <div class="glass-card pricing-card reveal">
-      <h3>Cloz Infinity</h3>
-      <div class="pricing-price">Pay Once, Own Forever</div>
-      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:20px;line-height:1.6;">Own your performance forever. Pay once, unlock every current and future Cloz feature — for life.</p>
-      <ul class="pricing-features">
-        <li><span class="check">&#10003;</span> Everything in Annual</li>
-        <li><span class="check">&#10003;</span> Lifetime Vault access</li>
-        <li><span class="check">&#10003;</span> Exclusive drops &amp; perks</li>
-        <li><span class="check">&#10003;</span> Direct dev feedback line</li>
-        <li><span class="check">&#10003;</span> Highest priority support</li>
-        <li><span class="check">&#10003;</span> Never pay again</li>
+    <!-- INFINITY -->
+    <div class="glass-card pricing-card-v2 pricing-card-infinity reveal">
+      <div class="pcard-top-bar pcard-bar-gold"></div>
+      <div class="pcard-badge pcard-badge-gold">&#9670; Best Value</div>
+      <div class="pcard-icon pcard-icon-infinity">&#8734;</div>
+      <h3 class="pcard-name">Cloz Infinity</h3>
+      <div class="pcard-price-label">Pay Once — Own Forever</div>
+      <p class="pcard-desc">Pay once, own every current and future Cloz feature for life. The ultimate investment in your PC.</p>
+      <ul class="pcard-features">
+        <li class="feat-yes">Everything in Annual</li>
+        <li class="feat-yes">Lifetime Vault access</li>
+        <li class="feat-yes">Exclusive drops &amp; perks</li>
+        <li class="feat-yes">Direct dev feedback line</li>
+        <li class="feat-yes">Highest priority support</li>
+        <li class="feat-yes">Never pay again</li>
       </ul>
-      <button class="btn btn-primary btn-sm sellapp-btn" data-url="https://clozoptimizer.sell.app/product/cloz-infinity-lifetime" style="width:100%;justify-content:center;">
+      <button class="btn btn-gold btn-sm sellapp-btn pcard-btn" data-url="https://clozoptimizer.sell.app/product/cloz-infinity-lifetime">
         Buy Lifetime
       </button>
     </div>
 
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar reveal">
+    <div class="trust-item">
+      <span class="trust-icon">&#9889;</span>
+      <div>
+        <div class="trust-item-title">Instant Delivery</div>
+        <div class="trust-item-desc">Key sent to Discord DMs</div>
+      </div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <span class="trust-icon">&#128274;</span>
+      <div>
+        <div class="trust-item-title">HWID Security</div>
+        <div class="trust-item-desc">License tied to your hardware</div>
+      </div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <span class="trust-icon">&#128172;</span>
+      <div>
+        <div class="trust-item-title">Discord Support</div>
+        <div class="trust-item-desc">Help available 24/7</div>
+      </div>
+    </div>
+    <div class="trust-divider"></div>
+    <div class="trust-item">
+      <span class="trust-icon">&#128179;</span>
+      <div>
+        <div class="trust-item-title">Secure Checkout</div>
+        <div class="trust-item-desc">Powered by Sell.app</div>
+      </div>
+    </div>
   </div>
 
   <p style="text-align:center;color:var(--muted);font-size:0.82rem;margin-top:28px;">

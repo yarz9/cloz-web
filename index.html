@@ -121,13 +121,14 @@
 </section>
 
 <!-- PRICING PREVIEW -->
-<section class="section section-center" id="pricing" style="background:var(--bg2);">
+<section class="section section-center" id="pricing" style="background:linear-gradient(180deg,var(--bg2) 0%,var(--bg3) 100%);">
   <span class="section-label">Pricing</span>
   <h2 class="section-title">Choose your plan</h2>
   <p class="section-subtitle">All paid plans include full access. Your key is delivered instantly to your Discord DMs.</p>
   <div class="pricing-grid stagger-children">
 
     <div class="glass-card pricing-card reveal">
+      <div class="pricing-tier-icon ptier-free">&#127919;</div>
       <h3>Trial</h3>
       <div class="pricing-price">Free Forever</div>
       <ul class="pricing-features">
@@ -140,6 +141,7 @@
     </div>
 
     <div class="glass-card pricing-card reveal">
+      <div class="pricing-tier-icon ptier-pro">&#9889;</div>
       <h3>Cloz Pro</h3>
       <div class="pricing-price">1 Month or 3 Months</div>
       <ul class="pricing-features">
@@ -152,7 +154,8 @@
     </div>
 
     <div class="glass-card pricing-card featured reveal">
-      <div class="pricing-badge">MOST POPULAR</div>
+      <div class="pricing-badge">&#9733; Most Popular</div>
+      <div class="pricing-tier-icon ptier-elite">&#128081;</div>
       <h3>Cloz Elite</h3>
       <div class="pricing-price">Annual — 12 Months</div>
       <ul class="pricing-features">
@@ -161,19 +164,21 @@
         <li><span class="check">&#10003;</span> Early access builds</li>
         <li><span class="check">&#10003;</span> Priority support</li>
       </ul>
-      <a href="store.html" class="btn btn-primary btn-sm">Get Elite</a>
+      <button class="btn btn-primary btn-sm sellapp-btn" data-url="https://clozoptimizer.sell.app/product/cloz-elite-12-months" style="width:100%;justify-content:center;">Get Elite</button>
     </div>
 
-    <div class="glass-card pricing-card reveal">
+    <div class="glass-card pricing-card reveal" style="border-color:rgba(245,158,11,0.2);">
+      <div class="pricing-badge" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;">&#9670; Best Value</div>
+      <div class="pricing-tier-icon ptier-inf" style="color:#f59e0b;">&#8734;</div>
       <h3>Cloz Infinity</h3>
-      <div class="pricing-price">Pay Once, Own Forever</div>
+      <div class="pricing-price" style="color:#f59e0b;">Pay Once, Own Forever</div>
       <ul class="pricing-features">
         <li><span class="check">&#10003;</span> Everything in Annual</li>
         <li><span class="check">&#10003;</span> Lifetime Vault</li>
         <li><span class="check">&#10003;</span> Exclusive drops</li>
         <li><span class="check">&#10003;</span> Direct dev feedback</li>
       </ul>
-      <a href="store.html" class="btn btn-primary btn-sm">Get Lifetime</a>
+      <button class="btn btn-gold btn-sm sellapp-btn" data-url="https://clozoptimizer.sell.app/product/cloz-infinity-lifetime" style="width:100%;justify-content:center;">Get Lifetime</button>
     </div>
 
   </div>
@@ -359,12 +364,8 @@
   document.querySelectorAll('.sellapp-btn').forEach(function(btn) {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
-      let url = btn.getAttribute('data-url');
+      var url = btn.getAttribute('data-url');
       if (!url) return;
-      if (url.includes('REPLACE_WITH')) {
-        alert('Store link not configured yet. Please check back soon or contact us on Discord.');
-        return;
-      }
       url = appendDiscordId(url);
       window.open(url, '_blank', 'noopener,noreferrer');
     });

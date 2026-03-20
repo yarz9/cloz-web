@@ -1067,3 +1067,403 @@ img { max-width: 100%; display: block; }
   .hero-stat-value { font-size: 1.3rem; }
   .glass-card { padding: 24px 18px; }
 }
+
+/* ============================================
+   STORE PAGE — ENHANCED PRICING v2
+   ============================================ */
+
+/* Store hero glow */
+.store-hero-section {
+  min-height: auto;
+  padding: 140px 40px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.store-hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(124, 58, 237, 0.13) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.store-hero-section > * { position: relative; z-index: 1; }
+
+.trust-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* V2 Pricing Grid */
+.pricing-grid-v2 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  align-items: start;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+/* V2 Pricing Card */
+.pricing-card-v2 {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+}
+
+.pricing-card-v2:hover {
+  transform: translateY(-4px);
+}
+
+/* Padding helpers for v2 card internals */
+.pcard-name,
+.pcard-price-label,
+.pcard-desc {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Top color bar */
+.pcard-top-bar {
+  height: 3px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.pcard-bar-muted {
+  background: linear-gradient(90deg, rgba(42,42,69,0.9), rgba(42,42,69,0.3));
+}
+
+.pcard-bar-purple {
+  background: linear-gradient(90deg, var(--purple), var(--purple3));
+}
+
+.pcard-bar-gradient {
+  background: linear-gradient(90deg, #7c3aed, #c084fc, #7c3aed);
+  background-size: 200%;
+  animation: barShimmer 3s linear infinite;
+}
+
+.pcard-bar-gold {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24, #f59e0b);
+}
+
+@keyframes barShimmer {
+  0%   { background-position: 0%; }
+  100% { background-position: 200%; }
+}
+
+/* Plan badge */
+.pcard-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--purple), var(--purple2));
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin: 16px auto 0;
+  align-self: center;
+}
+
+.pcard-badge-gold {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000;
+}
+
+/* Tier icon */
+.pcard-icon {
+  width: 58px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  font-size: 1.7rem;
+  margin: 20px auto 16px;
+  flex-shrink: 0;
+}
+
+.pcard-icon-free {
+  background: rgba(136, 136, 170, 0.07);
+  border: 1px solid rgba(136, 136, 170, 0.15);
+}
+
+.pcard-icon-pro {
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+.pcard-icon-elite {
+  background: rgba(124, 58, 237, 0.18);
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.18);
+}
+
+.pcard-icon-infinity {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #f59e0b;
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
+/* Plan name */
+.pcard-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+/* Duration / price label */
+.pcard-price-label {
+  font-size: 0.75rem;
+  color: var(--purple3);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 14px;
+}
+
+.pricing-card-infinity .pcard-price-label {
+  color: #f59e0b;
+}
+
+/* Description */
+.pcard-desc {
+  font-size: 0.83rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+
+/* Features list v2 */
+.pcard-features {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  flex: 1;
+}
+
+.pcard-features li {
+  padding: 5px 0;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-bottom: 1px solid rgba(42, 42, 69, 0.4);
+}
+
+.pcard-features li:last-child {
+  border-bottom: none;
+}
+
+.feat-yes { color: var(--text); }
+.feat-no  { color: rgba(136, 136, 170, 0.45); }
+
+.feat-yes::before {
+  content: '✓';
+  color: var(--green);
+  font-weight: 700;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+  width: 14px;
+  margin-top: 1px;
+}
+
+.feat-no::before {
+  content: '✗';
+  color: rgba(136, 136, 170, 0.3);
+  font-size: 0.78rem;
+  flex-shrink: 0;
+  width: 14px;
+  margin-top: 1px;
+}
+
+/* Button area */
+.pcard-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 24px 28px;
+}
+
+.pcard-btn {
+  width: calc(100% - 48px);
+  margin: 0 24px 28px;
+  justify-content: center;
+}
+
+/* Elite featured card */
+.pricing-card-elite {
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: 0 0 60px rgba(124, 58, 237, 0.14), 0 24px 64px rgba(0,0,0,0.35);
+  transform: translateY(-10px);
+  background: rgba(28, 18, 52, 0.75);
+  z-index: 2;
+}
+
+.pricing-card-elite:hover {
+  transform: translateY(-16px);
+  box-shadow: 0 0 80px rgba(124, 58, 237, 0.22), 0 28px 72px rgba(0,0,0,0.4);
+}
+
+/* Infinity card */
+.pricing-card-infinity {
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.pricing-card-infinity:hover {
+  border-color: rgba(245, 158, 11, 0.45);
+  box-shadow: 0 8px 40px rgba(245, 158, 11, 0.08);
+}
+
+/* Gold button */
+.btn-gold {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000 !important;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
+  border: none;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(245, 158, 11, 0.5);
+  color: #000 !important;
+}
+
+/* Trust Bar */
+.trust-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 1120px;
+  margin: 48px auto 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(22, 22, 42, 0.4);
+  overflow: hidden;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 26px 28px;
+  flex: 1;
+  min-width: 180px;
+  transition: background 0.3s ease;
+}
+
+.trust-item:hover {
+  background: rgba(124, 58, 237, 0.05);
+}
+
+.trust-divider {
+  width: 1px;
+  height: 52px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.trust-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.trust-item-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.trust-item-desc {
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+/* Homepage pricing card tier icons */
+.pricing-tier-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  font-size: 1.5rem;
+  margin: 0 auto 18px;
+}
+
+.ptier-free  { background: rgba(136, 136, 170, 0.07); border: 1px solid rgba(136, 136, 170, 0.15); }
+.ptier-pro   { background: rgba(124, 58, 237, 0.1);   border: 1px solid rgba(124, 58, 237, 0.2); }
+.ptier-elite { background: rgba(124, 58, 237, 0.18);  border: 1px solid rgba(124, 58, 237, 0.4); }
+.ptier-inf   { background: rgba(245, 158, 11, 0.1);   border: 1px solid rgba(245, 158, 11, 0.3); }
+
+/* Improved homepage pricing section bg */
+.pricing-section-bg {
+  background:
+    linear-gradient(180deg, var(--bg2) 0%, var(--bg3) 100%),
+    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(124, 58, 237, 0.06), transparent);
+}
+
+/* Responsive v2 pricing */
+@media (max-width: 1100px) {
+  .pricing-grid-v2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pricing-card-elite {
+    transform: translateY(0);
+  }
+
+  .pricing-card-elite:hover {
+    transform: translateY(-4px);
+  }
+}
+
+@media (max-width: 640px) {
+  .pricing-grid-v2 {
+    grid-template-columns: 1fr;
+  }
+
+  .trust-bar {
+    flex-direction: column;
+  }
+
+  .trust-divider {
+    width: 80%;
+    height: 1px;
+  }
+
+  .trust-item {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .store-hero-section {
+    padding: 120px 20px 60px;
+  }
+}
