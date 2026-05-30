@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200" viewBox="0 0 600 200"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs>
+      <g opacity="0" transform="translate(0,30)">
+        <animate attributeName="opacity" values="0;1;1;1;0" keyTimes="0;0.15;0.8;0.9;1" dur="4s" repeatCount="indefinite"/>
+        <animateTransform attributeName="transform" type="translate" values="0,30;0,0;0,0;0,30" keyTimes="0;0.15;0.85;1" dur="4s" repeatCount="indefinite"/>
+        <rect x="20" y="60" width="560" height="80" rx="16" fill="rgba(255,255,255,0.04)" stroke="url(#mg)" stroke-width="1.5"/>
+        <g transform="translate(56,100) scale(1.2) translate(-12,-12)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="none" stroke="url(#mg)" stroke-width="2"/></g>
+        <text x="92" y="95" font-family="Inter,sans-serif" font-weight="700" font-size="20" fill="#f0f0f5">Optimization Applied</text>
+        <text x="92" y="118" font-family="Inter,sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">System tuned · +14% performance</text>
+      </g></svg>

@@ -1,0 +1,51 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib/db'
+import { getCurrentUser } from '@/lib/auth'
+
+export async function POST(req: NextRequest) {
+  const user = await getCurrentUser()
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const { presetId, rating, comment } = await req.json()
+  if (!presetId || !rating || rating < 1 || rating > 5) {
+    return NextResponse.json({ error: 'Invalid rating (1-5 required)' }, { status: 400 })
+  }
+
+  try {
+    const review = await prisma.review.upsert({
+      where: { presetId_userId: { presetId, userId: user.id } },
+      create: { presetId, userId: user.id, rating, comment },
+      update: { rating, comment },
+    })
+
+    // Recalculate preset rating
+    const agg = await prisma.review.aggregate({
+      where: { presetId },
+      _avg: { rating: true },
+      _count: { rating: true },
+    })
+    await prisma.preset.update({
+      where: { id: presetId },
+      data: { ratingAvg: agg._avg.rating || 0, ratingCount: agg._count.rating },
+    })
+
+    return NextResponse.json({ review })
+  } catch (e: any) {
+    return NextResponse.json({ error: 'Failed to submit review' }, { status: 500 })
+  }
+}
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  const presetId = searchParams.get('presetId')
+  if (!presetId) return NextResponse.json({ error: 'presetId required' }, { status: 400 })
+
+  const reviews = await prisma.review.findMany({
+    where: { presetId },
+    include: { user: { select: { username: true, displayName: true, avatarUrl: true } } },
+    orderBy: { createdAt: 'desc' },
+    take: 50,
+  })
+
+  return NextResponse.json({ reviews })
+}

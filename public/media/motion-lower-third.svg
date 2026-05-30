@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="400" viewBox="0 0 1920 400"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs>
+    <g opacity="0" transform="translate(-80,0)">
+      <animate attributeName="opacity" values="0;1" dur="0.6s" begin="0.2s" fill="freeze"/>
+      <animateTransform attributeName="transform" type="translate" values="-80,0;0,0" dur="0.6s" begin="0.2s" fill="freeze"/>
+      <rect x="120" y="240" width="8" height="90" fill="url(#mg)"/>
+      <rect x="140" y="240" width="520" height="90" rx="10" fill="rgba(4,4,10,0.7)"/>
+      <text x="168" y="285" font-family="Inter,sans-serif" font-weight="800" font-size="34" fill="#f0f0f5">ClozOptimizer</text>
+      <text x="168" y="314" font-family="Inter,sans-serif" font-size="16" fill="#60a5fa">Performance Suite</text>
+    </g></svg>

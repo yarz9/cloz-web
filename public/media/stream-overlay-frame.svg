@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"><defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <radialGradient id="glow1"><stop offset="0%" stop-color="rgba(96,165,250,0.10)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+    <radialGradient id="glow2"><stop offset="0%" stop-color="rgba(167,139,250,0.07)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  </defs>
+    <g transform="translate(776.4, 356.4)">
+      <rect width="367.20000000000005" height="367.20000000000005" rx="102.81600000000002" fill="rgba(96,165,250,0.10)" stroke="url(#grad)" stroke-width="9.180000000000001"/>
+      <g transform="translate(183.60000000000002, 183.60000000000002) scale(9.180000000000001) translate(-12,-12)">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="none" stroke="url(#grad)" stroke-width="2" stroke-linejoin="round"/>
+      </g>
+    </g></svg>

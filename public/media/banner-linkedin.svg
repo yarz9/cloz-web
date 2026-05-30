@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1584" height="396" viewBox="0 0 1584 396"><defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <radialGradient id="glow1"><stop offset="0%" stop-color="rgba(96,165,250,0.10)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+    <radialGradient id="glow2"><stop offset="0%" stop-color="rgba(167,139,250,0.07)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  </defs><rect width="1584" height="396" fill="#04040a"/>
+    <defs><pattern id="g" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+    </pattern></defs>
+    <rect width="1584" height="396" fill="url(#g)"/>
+    <ellipse cx="475.2" cy="118.8" rx="633.6" ry="198" fill="url(#glow1)"/>
+    <ellipse cx="1267.2" cy="277.2" rx="475.2" ry="158.4" fill="url(#glow2)"/>
+    <g transform="translate(439.56, 130.68)">
+      <rect width="134.64000000000001" height="134.64000000000001" rx="37.699200000000005" fill="rgba(96,165,250,0.10)" stroke="url(#grad)" stroke-width="3.3660000000000005"/>
+      <g transform="translate(67.32000000000001, 67.32000000000001) scale(3.3660000000000005) translate(-12,-12)">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="none" stroke="url(#grad)" stroke-width="2" stroke-linejoin="round"/>
+      </g>
+    </g><text x="601.128" y="214.1568" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="67.32000000000001" fill="#f0f0f5">ClozOptimizer</text><text x="603.8208" y="254.5488" font-family="Inter,Arial,sans-serif" font-weight="500" font-size="18.849600000000002" letter-spacing="5.385600000000001" fill="rgba(255,255,255,0.45)">PERFORMANCE · OPTIMIZATION · GAMING</text></svg>

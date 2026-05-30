@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <radialGradient id="glow1"><stop offset="0%" stop-color="rgba(96,165,250,0.10)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+    <radialGradient id="glow2"><stop offset="0%" stop-color="rgba(167,139,250,0.07)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  </defs><rect width="1200" height="630" fill="#04040a"/>
+    <defs><pattern id="g" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+    </pattern></defs>
+    <rect width="1200" height="630" fill="url(#g)"/>
+    <ellipse cx="360" cy="189" rx="480" ry="315" fill="url(#glow1)"/>
+    <ellipse cx="960" cy="441" rx="360" ry="252" fill="url(#glow2)"/>
+    <g transform="translate(276.9, 207.89999999999998)">
+      <rect width="214.20000000000002" height="214.20000000000002" rx="59.97600000000001" fill="rgba(96,165,250,0.10)" stroke="url(#grad)" stroke-width="5.355"/>
+      <g transform="translate(107.10000000000001, 107.10000000000001) scale(5.355) translate(-12,-12)">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="none" stroke="url(#grad)" stroke-width="2" stroke-linejoin="round"/>
+      </g>
+    </g><text x="533.94" y="340.704" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="107.10000000000001" fill="#f0f0f5">ClozOptimizer</text><text x="538.224" y="404.964" font-family="Inter,Arial,sans-serif" font-weight="500" font-size="29.988000000000007" letter-spacing="8.568000000000001" fill="rgba(255,255,255,0.45)">AI · CLOUD SYNC · MARKETPLACE</text></svg>

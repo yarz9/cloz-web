@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+    <defs><radialGradient id="gl"><stop offset="0%" stop-color="rgba(96,165,250,0.08)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+    <linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs>
+    <rect width="1600" height="1000" fill="#060609"/>
+    <ellipse cx="1120" cy="200" rx="640" ry="400" fill="url(#gl)"/>
+    <rect x="0" y="0" width="256" height="1000" fill="rgba(8,8,14,0.6)"/>
+    <g transform="translate(48, 60)"><rect width="28" height="28" rx="8" fill="rgba(96,165,250,0.12)" stroke="url(#gr)"/>
+      <g transform="translate(14,14) scale(0.7) translate(-12,-12)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="none" stroke="url(#gr)" stroke-width="2"/></g></g>
+    <rect x="48" y="160" width="160" height="10" rx="5" fill="rgba(255,255,255,0.25)"/><rect x="48" y="230" width="160" height="10" rx="5" fill="rgba(255,255,255,0.08)"/><rect x="48" y="300" width="160" height="10" rx="5" fill="rgba(255,255,255,0.08)"/><rect x="48" y="370" width="160" height="10" rx="5" fill="rgba(255,255,255,0.08)"/><rect x="48" y="440" width="160" height="10" rx="5" fill="rgba(255,255,255,0.08)"/><rect x="48" y="510.00000000000006" width="160" height="10" rx="5" fill="rgba(255,255,255,0.08)"/><rect x="48" y="580" width="160" height="10" rx="5" fill="rgba(255,255,255,0.08)"/>
+    <text x="296" y="110" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="50" fill="#f0f0f5">Dashboard</text>
+    <rect x="360" y="188" width="378.6666666666667" height="362" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
+      <rect x="376" y="204" width="157.86666666666667" height="10" rx="5" fill="#60a5fa" opacity="0.5"/>
+      <rect x="376" y="222" width="236.8" height="8" rx="4" fill="rgba(255,255,255,0.12)"/><rect x="754.6666666666667" y="188" width="378.6666666666667" height="362" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
+      <rect x="770.6666666666667" y="204" width="157.86666666666667" height="10" rx="5" fill="#60a5fa" opacity="0.5"/>
+      <rect x="770.6666666666667" y="222" width="236.8" height="8" rx="4" fill="rgba(255,255,255,0.12)"/><rect x="1149.3333333333335" y="188" width="378.6666666666667" height="362" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
+      <rect x="1165.3333333333335" y="204" width="157.86666666666667" height="10" rx="5" fill="#60a5fa" opacity="0.5"/>
+      <rect x="1165.3333333333335" y="222" width="236.8" height="8" rx="4" fill="rgba(255,255,255,0.12)"/><rect x="360" y="566" width="378.6666666666667" height="362" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
+      <rect x="376" y="582" width="157.86666666666667" height="10" rx="5" fill="#60a5fa" opacity="0.5"/>
+      <rect x="376" y="600" width="236.8" height="8" rx="4" fill="rgba(255,255,255,0.12)"/><rect x="754.6666666666667" y="566" width="378.6666666666667" height="362" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
+      <rect x="770.6666666666667" y="582" width="157.86666666666667" height="10" rx="5" fill="#60a5fa" opacity="0.5"/>
+      <rect x="770.6666666666667" y="600" width="236.8" height="8" rx="4" fill="rgba(255,255,255,0.12)"/><rect x="1149.3333333333335" y="566" width="378.6666666666667" height="362" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)"/>
+      <rect x="1165.3333333333335" y="582" width="157.86666666666667" height="10" rx="5" fill="#60a5fa" opacity="0.5"/>
+      <rect x="1165.3333333333335" y="600" width="236.8" height="8" rx="4" fill="rgba(255,255,255,0.12)"/>
+  </svg>

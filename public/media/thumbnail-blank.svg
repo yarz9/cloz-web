@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <radialGradient id="glow1"><stop offset="0%" stop-color="rgba(96,165,250,0.10)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+    <radialGradient id="glow2"><stop offset="0%" stop-color="rgba(167,139,250,0.07)"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+  </defs><rect width="1280" height="720" fill="#04040a"/>
+    <defs><pattern id="g" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="rgba(255,255,255,0.025)" stroke-width="1"/>
+    </pattern></defs>
+    <rect width="1280" height="720" fill="url(#g)"/>
+    <ellipse cx="384" cy="216" rx="512" ry="360" fill="url(#glow1)"/>
+    <ellipse cx="1024" cy="503.99999999999994" rx="384" ry="288" fill="url(#glow2)"/>
+    <g transform="translate(517.6, 237.6)">
+      <rect width="244.8" height="244.8" rx="68.54400000000001" fill="rgba(96,165,250,0.10)" stroke="url(#grad)" stroke-width="6.120000000000001"/>
+      <g transform="translate(122.4, 122.4) scale(6.12) translate(-12,-12)">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="none" stroke="url(#grad)" stroke-width="2" stroke-linejoin="round"/>
+      </g>
+    </g></svg>
