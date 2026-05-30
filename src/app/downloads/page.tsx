@@ -1,5 +1,9 @@
 import { Download, Monitor, Shield, CheckCircle2, HardDrive, Cpu, MemoryStick, Zap } from "lucide-react"
 
+const RELEASE_BASE = "https://github.com/yarz9/cloz-web/releases/latest/download"
+const INSTALLER_URL = `${RELEASE_BASE}/ClozOptimizer-Setup-2.0.0.exe`
+const PORTABLE_URL = `${RELEASE_BASE}/ClozOptimizer-2.0.0-win-x64.zip`
+
 const requirements = [
   { icon: Monitor, label: "OS", value: "Windows 10/11 (64-bit)" },
   { icon: Cpu, label: "CPU", value: "Dual-core 1.8 GHz+" },
@@ -39,13 +43,13 @@ export default function DownloadsPage() {
           <div className="flex items-center gap-3 mb-6 text-[0.7rem] text-[rgba(255,255,255,0.3)]">
             <span>v2.0.0</span>
             <span>·</span>
-            <span>~320 MB</span>
+            <span>~121 MB</span>
             <span>·</span>
             <span>Windows 10/11</span>
           </div>
-          <button className="btn-primary w-full py-3.5 rounded-xl text-[0.88rem] font-bold flex items-center justify-center gap-2.5">
+          <a href={PORTABLE_URL} className="btn-primary w-full py-3.5 rounded-xl text-[0.88rem] font-bold flex items-center justify-center gap-2.5">
             <Download size={18} /> Download Portable (.zip)
-          </button>
+          </a>
         </div>
 
         <div className="glass rounded-2xl p-8">
@@ -62,13 +66,13 @@ export default function DownloadsPage() {
           <div className="flex items-center gap-3 mb-6 text-[0.7rem] text-[rgba(255,255,255,0.3)]">
             <span>v2.0.0</span>
             <span>·</span>
-            <span>~120 MB</span>
+            <span>~87 MB</span>
             <span>·</span>
             <span>Windows 10/11</span>
           </div>
-          <button className="btn-white w-full py-3.5 rounded-xl text-[0.88rem] font-medium flex items-center justify-center gap-2.5">
+          <a href={INSTALLER_URL} className="btn-white w-full py-3.5 rounded-xl text-[0.88rem] font-medium flex items-center justify-center gap-2.5">
             <Download size={18} /> Download Installer (.exe)
-          </button>
+          </a>
         </div>
       </div>
 
