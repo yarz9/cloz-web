@@ -1,13 +1,34 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Zap, Mail, Lock, ArrowRight, Loader2 } from 'lucide-react'
+import { useAuth } from '@/components/AuthProvider'
+import { Zap, Mail, Lock, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react'
 
 export default function LoginPage() {
+  const { user, loading: authLoading } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  // Already signed in — no reason to show the login form
+  if (!authLoading && user) {
+    return (
+      <div className="min-h-[80vh] flex items-center justify-center px-6">
+        <div className="w-full max-w-md text-center glass-strong rounded-2xl p-10">
+          <div className="w-14 h-14 rounded-2xl glass flex items-center justify-center mx-auto mb-4 border border-[rgba(96,165,250,0.15)]">
+            <CheckCircle2 size={24} className="text-[#4ade80]" />
+          </div>
+          <h1 className="text-xl font-bold mb-1">You&apos;re already signed in</h1>
+          <p className="text-[0.82rem] text-[rgba(255,255,255,0.4)] mb-6">Logged in as @{user.username}</p>
+          <div className="flex gap-3 justify-center">
+            <Link href="/account" className="btn-primary px-5 py-2.5 rounded-lg text-[0.82rem] font-bold">Go to Account</Link>
+            <Link href="/" className="btn-white px-5 py-2.5 rounded-lg text-[0.82rem] font-medium">Home</Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
