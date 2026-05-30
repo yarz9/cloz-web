@@ -18,6 +18,14 @@ const proFeatures = [
   { text: "Priority Support", included: true },
 ]
 
+// Sell.app product links (set these in Railway; fall back to /register if unset)
+const BUY = {
+  '1month': process.env.NEXT_PUBLIC_SELLAPP_1MONTH || '/register',
+  '3month': process.env.NEXT_PUBLIC_SELLAPP_3MONTH || '/register',
+  '12month': process.env.NEXT_PUBLIC_SELLAPP_12MONTH || '/register',
+  lifetime: process.env.NEXT_PUBLIC_SELLAPP_LIFETIME || '/register',
+}
+
 // Pro billing periods (50% launch promo)
 const periods = [
   { id: "1month", label: "1 Month", price: "$4.99", original: "$9.99", per: "/month", note: "billed monthly", badge: null as string | null },
@@ -125,7 +133,7 @@ export default function PricingPage() {
           <p className="text-[0.78rem] text-[rgba(255,255,255,0.35)] mb-6">{period.note}</p>
 
           <FeatureList features={proFeatures} />
-          <Link href="/register" className="btn-primary w-full py-3 rounded-xl text-[0.85rem] font-bold text-center block">Get Pro</Link>
+          <a href={(BUY as any)[periodId] || '/register'} className="btn-primary w-full py-3 rounded-xl text-[0.85rem] font-bold text-center block">Get Pro</a>
         </div>
 
         {/* Lifetime */}
@@ -141,7 +149,7 @@ export default function PricingPage() {
           </div>
           <p className="text-[0.78rem] text-[rgba(255,255,255,0.35)] mb-6">Pay once, own forever</p>
           <FeatureList features={lifetimeFeatures} />
-          <Link href="/register" className="btn-white w-full py-3 rounded-xl text-[0.85rem] font-bold text-center block">Go Lifetime</Link>
+          <a href={BUY.lifetime} className="btn-white w-full py-3 rounded-xl text-[0.85rem] font-bold text-center block">Go Lifetime</a>
         </div>
       </div>
 

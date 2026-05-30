@@ -382,6 +382,33 @@ function AccountContent() {
 
           {tab === 'settings' && (
             <div className="space-y-5">
+              {/* Connections */}
+              <div className="glass-strong rounded-2xl p-8">
+                <h2 className="text-lg font-bold mb-2">Connections</h2>
+                <p className="text-[0.76rem] text-[rgba(255,255,255,0.4)] mb-5">Link your Discord to get your plan&apos;s role in the community server automatically.</p>
+                {searchParams.get('discord') === 'linked' && (
+                  <div className="mb-4 px-4 py-2.5 rounded-lg bg-[rgba(74,222,128,0.08)] text-[#4ade80] text-[0.76rem] flex items-center gap-2"><CheckCircle2 size={14} /> Discord linked! Your roles have been synced.</div>
+                )}
+                {searchParams.get('discord') === 'taken' && (
+                  <div className="mb-4 px-4 py-2.5 rounded-lg bg-[rgba(248,113,113,0.08)] text-[#f87171] text-[0.76rem]">That Discord account is already linked to another user.</div>
+                )}
+                {['error', 'denied'].includes(searchParams.get('discord') || '') && (
+                  <div className="mb-4 px-4 py-2.5 rounded-lg bg-[rgba(248,113,113,0.08)] text-[#f87171] text-[0.76rem]">Couldn&apos;t link Discord — please try again.</div>
+                )}
+                <div className="flex items-center justify-between p-4 rounded-xl glass">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-[rgba(88,101,242,0.15)] flex items-center justify-center text-[#8b9bf4] font-bold">D</div>
+                    <div>
+                      <div className="text-[0.85rem] font-semibold">Discord</div>
+                      <div className="text-[0.68rem] text-[rgba(255,255,255,0.35)]">{user.discordId ? `Linked · ${user.discordId}` : 'Not linked'}</div>
+                    </div>
+                  </div>
+                  {user.discordId
+                    ? <a href="/api/auth/discord" className="btn-white px-4 py-2 rounded-lg text-[0.76rem] font-medium">Re-sync</a>
+                    : <a href="/api/auth/discord" className="btn-primary px-4 py-2 rounded-lg text-[0.76rem] font-bold">Link Discord</a>}
+                </div>
+              </div>
+
               <div className="glass-strong rounded-2xl p-8">
                 <h2 className="text-lg font-bold mb-5">Change Password</h2>
                 {pwMsg && (

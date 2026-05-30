@@ -12,6 +12,7 @@ export interface ClozUser {
   role: string
   verified: boolean
   plan?: string
+  discordId?: string | null
 }
 
 interface AuthContextValue {

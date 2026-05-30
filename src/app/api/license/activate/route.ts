@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getCurrentUser, verifyToken } from '@/lib/auth'
+import { syncDiscordRoles } from '@/lib/discord-roles'
 
 const TEST_KEY = 'CLOZ-TEST-PRO-2024'
 
@@ -81,9 +82,16 @@ export async function POST(req: NextRequest) {
       expiresAt: expiryFor(existing.plan),
     },
   })
-  await prisma.user.update({ where: { id: user.id }, data: { plan: PLAN_TIER[updated.plan] || 'pro' } })
+  const tier = PLAN_TIER[updated.plan] || 'pro'
+  await prisma.user.update({ where: { id: user.id }, data: { plan: tier } })
 
-  return NextResponse.json({ success: true, plan: updated.plan, tier: PLAN_TIER[updated.plan] || 'pro', expiresAt: updated.expiresAt })
+  // Sync Discord role if the account is linked (no-op if not configured)
+  try {
+    const full = await prisma.user.findUnique({ where: { id: user.id }, select: { discordId: true } })
+    if (full?.discordId) await syncDiscordRoles(full.discordId, tier, true)
+  } catch {}
+
+  return NextResponse.json({ success: true, plan: updated.plan, tier, expiresAt: updated.expiresAt })
 }
 
 // GET — list the user's licenses
