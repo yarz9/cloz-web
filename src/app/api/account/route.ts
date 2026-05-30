@@ -12,7 +12,22 @@ export async function PATCH(req: NextRequest) {
 
   if (typeof body.displayName === 'string') data.displayName = body.displayName.slice(0, 60)
   if (typeof body.bio === 'string') data.bio = body.bio.slice(0, 280)
-  if (typeof body.avatarUrl === 'string') data.avatarUrl = body.avatarUrl
+  if (typeof body.avatarUrl === 'string') {
+    const v = body.avatarUrl
+    // Allow clearing, an http(s) URL, or a reasonably-sized inline image data URL
+    if (v === '') {
+      data.avatarUrl = null
+    } else if (/^https?:\/\//.test(v)) {
+      data.avatarUrl = v.slice(0, 1000)
+    } else if (/^data:image\/(png|jpeg|jpg|webp);base64,/.test(v)) {
+      if (v.length > 1_500_000) {
+        return NextResponse.json({ error: 'Image too large (max ~1MB). Try a smaller picture.' }, { status: 400 })
+      }
+      data.avatarUrl = v
+    } else {
+      return NextResponse.json({ error: 'Invalid image format' }, { status: 400 })
+    }
+  }
 
   // Password change (requires current password)
   if (body.newPassword) {

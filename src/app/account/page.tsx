@@ -25,6 +25,8 @@ function AccountContent() {
   const [activating, setActivating] = useState(false)
   const [activateMsg, setActivateMsg] = useState<{ ok: boolean; text: string } | null>(null)
   const [licenses, setLicenses] = useState<any[]>([])
+  const [avatarUploading, setAvatarUploading] = useState(false)
+  const [avatarMsg, setAvatarMsg] = useState('')
 
   useEffect(() => {
     if (user) {
@@ -78,6 +80,64 @@ function AccountContent() {
     )
   }
 
+  // Resize an image file to a square <=256px and return a JPEG data URL
+  const resizeImage = (file: File): Promise<string> => new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onerror = () => reject(new Error('read failed'))
+    reader.onload = () => {
+      const img = new window.Image()
+      img.onerror = () => reject(new Error('decode failed'))
+      img.onload = () => {
+        const size = 256
+        const canvas = document.createElement('canvas')
+        canvas.width = size; canvas.height = size
+        const ctx = canvas.getContext('2d')
+        if (!ctx) return reject(new Error('no canvas'))
+        const min = Math.min(img.width, img.height)
+        const sx = (img.width - min) / 2
+        const sy = (img.height - min) / 2
+        ctx.drawImage(img, sx, sy, min, min, 0, 0, size, size)
+        resolve(canvas.toDataURL('image/jpeg', 0.85))
+      }
+      img.src = reader.result as string
+    }
+    reader.readAsDataURL(file)
+  })
+
+  const onAvatarPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    setAvatarMsg('')
+    if (!file.type.startsWith('image/')) { setAvatarMsg('Please choose an image file'); return }
+    if (file.size > 8 * 1024 * 1024) { setAvatarMsg('Image too large (max 8MB)'); return }
+    setAvatarUploading(true)
+    try {
+      const dataUrl = await resizeImage(file)
+      const res = await fetch('/api/account', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ avatarUrl: dataUrl }),
+      })
+      if (res.ok) { await refresh() } else {
+        const d = await res.json().catch(() => ({}))
+        setAvatarMsg(d.error || 'Upload failed')
+      }
+    } catch { setAvatarMsg('Could not process image') }
+    setAvatarUploading(false)
+  }
+
+  const removeAvatar = async () => {
+    setAvatarUploading(true); setAvatarMsg('')
+    try {
+      const res = await fetch('/api/account', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ avatarUrl: '' }),
+      })
+      if (res.ok) await refresh()
+    } catch {}
+    setAvatarUploading(false)
+  }
+
   const saveProfile = async () => {
     setSaving(true); setSaved(false)
     try {
@@ -116,9 +176,13 @@ function AccountContent() {
     <div className="max-w-5xl mx-auto px-6 py-16">
       {/* Header */}
       <div className="flex items-center gap-4 mb-10">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-2xl font-bold text-white">
-          {(user.displayName || user.username).charAt(0).toUpperCase()}
-        </div>
+        {user.avatarUrl ? (
+          <img src={user.avatarUrl} alt="" className="w-16 h-16 rounded-2xl object-cover" />
+        ) : (
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-2xl font-bold text-white">
+            {(user.displayName || user.username).charAt(0).toUpperCase()}
+          </div>
+        )}
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-extrabold">{user.displayName || user.username}</h1>
@@ -148,6 +212,38 @@ function AccountContent() {
           {tab === 'profile' && (
             <div className="glass-strong rounded-2xl p-8 space-y-5">
               <h2 className="text-lg font-bold">Edit Profile</h2>
+
+              {/* Profile picture */}
+              <div>
+                <label className="block text-[0.72rem] text-[rgba(255,255,255,0.3)] font-medium mb-3">Profile Picture</label>
+                <div className="flex items-center gap-5">
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt="" className="w-20 h-20 rounded-2xl object-cover shrink-0" />
+                  ) : (
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-3xl font-bold text-white shrink-0">
+                      {(user.displayName || user.username).charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <label className={`btn-white px-4 py-2 rounded-lg text-[0.78rem] font-medium cursor-pointer flex items-center gap-2 ${avatarUploading ? 'opacity-60 pointer-events-none' : ''}`}>
+                        {avatarUploading ? <Loader2 size={13} className="animate-spin" /> : <ImageIcon size={13} />}
+                        {user.avatarUrl ? 'Change' : 'Upload'}
+                        <input type="file" accept="image/*" className="hidden" onChange={onAvatarPick} disabled={avatarUploading} />
+                      </label>
+                      {user.avatarUrl && (
+                        <button onClick={removeAvatar} disabled={avatarUploading}
+                          className="px-4 py-2 rounded-lg text-[0.78rem] font-medium text-[#f87171] hover:bg-[rgba(248,113,113,0.08)] transition-all">
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    <p className="text-[0.65rem] text-[rgba(255,255,255,0.25)]">JPG, PNG or WebP · auto-cropped to a square · max 8MB</p>
+                    {avatarMsg && <p className="text-[0.68rem] text-[#f87171]">{avatarMsg}</p>}
+                  </div>
+                </div>
+              </div>
+
               <div>
                 <label className="block text-[0.72rem] text-[rgba(255,255,255,0.3)] font-medium mb-2">Display Name</label>
                 <input value={displayName} onChange={e => setDisplayName(e.target.value)}

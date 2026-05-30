@@ -1,11 +1,12 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import { useAuth } from '@/components/AuthProvider'
 import {
   Star, Download, Heart, Shield, ArrowLeft, Clock, Tag, Monitor,
   ChevronRight, User, MessageSquare, CheckCircle2, Sparkles, Copy,
-  ExternalLink, Calendar, Package, Loader2
+  ExternalLink, Calendar, Package, Loader2, Send
 } from 'lucide-react'
 
 interface PresetDetail {
@@ -34,25 +35,50 @@ function StarRating({ rating, size = 14 }: { rating: number; size?: number }) {
 export default function PresetDetailPage() {
   const params = useParams()
   const slug = params.slug as string
+  const { user } = useAuth()
   const [preset, setPreset] = useState<PresetDetail | null>(null)
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState<'overview' | 'reviews' | 'versions'>('overview')
   const [installing, setInstalling] = useState(false)
   const [installed, setInstalled] = useState(false)
   const [favorited, setFavorited] = useState(false)
+  // Review form
+  const [myRating, setMyRating] = useState(0)
+  const [hoverRating, setHoverRating] = useState(0)
+  const [myComment, setMyComment] = useState('')
+  const [submittingReview, setSubmittingReview] = useState(false)
+  const [reviewMsg, setReviewMsg] = useState('')
 
-  useEffect(() => {
-    fetch(`/api/marketplace/${slug}`)
-      .then(r => r.json())
-      .then(data => {
-        if (data.preset) {
-          setPreset(data.preset)
-          setFavorited(data.preset.isFavorited)
-        }
-        setLoading(false)
+  const loadPreset = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/marketplace/${slug}`)
+      const data = await res.json()
+      if (data.preset) {
+        setPreset(data.preset)
+        setFavorited(data.preset.isFavorited)
+        // Pre-fill the form if the user already reviewed
+        const mine = user && data.preset.reviews?.find((r: any) => r.user.username === user.username)
+        if (mine) { setMyRating(mine.rating); setMyComment(mine.comment || '') }
+      }
+    } catch {} finally { setLoading(false) }
+  }, [slug, user])
+
+  useEffect(() => { loadPreset() }, [loadPreset])
+
+  const submitReview = async () => {
+    if (!preset || myRating < 1) { setReviewMsg('Please pick a star rating'); return }
+    setSubmittingReview(true); setReviewMsg('')
+    try {
+      const res = await fetch('/api/reviews', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ presetId: preset.id, rating: myRating, comment: myComment.trim() || null }),
       })
-      .catch(() => setLoading(false))
-  }, [slug])
+      const data = await res.json()
+      if (res.ok) { setReviewMsg('Thanks for your review!'); await loadPreset() }
+      else setReviewMsg(data.error || 'Failed to submit review')
+    } catch { setReviewMsg('Connection error') }
+    setSubmittingReview(false)
+  }
 
   const handleInstall = async () => {
     if (!preset) return
@@ -211,12 +237,51 @@ export default function PresetDetailPage() {
 
           {tab === 'reviews' && (
             <div className="space-y-3">
+              {/* Write a review */}
+              {user ? (
+                <div className="glass-strong rounded-xl p-5 mb-2">
+                  <h3 className="text-[0.85rem] font-bold mb-3">
+                    {preset.reviews.some(r => r.user.username === user.username) ? 'Update your review' : 'Write a review'}
+                  </h3>
+                  <div className="flex items-center gap-1 mb-3" onMouseLeave={() => setHoverRating(0)}>
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <button key={i} type="button" onClick={() => setMyRating(i)} onMouseEnter={() => setHoverRating(i)}
+                        className="p-0.5 transition-transform hover:scale-110">
+                        <Star size={22}
+                          fill={i <= (hoverRating || myRating) ? '#fbbf24' : 'none'}
+                          stroke={i <= (hoverRating || myRating) ? '#fbbf24' : 'rgba(255,255,255,0.25)'} strokeWidth={1.5} />
+                      </button>
+                    ))}
+                    {myRating > 0 && <span className="text-[0.72rem] text-[rgba(255,255,255,0.4)] ml-2">{myRating}/5</span>}
+                  </div>
+                  <textarea value={myComment} onChange={e => setMyComment(e.target.value)} rows={3} maxLength={1000}
+                    placeholder="Share your experience with this preset (optional)…"
+                    className="w-full glass rounded-lg py-2.5 px-3.5 text-[0.8rem] outline-none focus:border-[rgba(96,165,250,0.3)] transition-all resize-none placeholder:text-[rgba(255,255,255,0.18)]" />
+                  <div className="flex items-center gap-3 mt-3">
+                    <button onClick={submitReview} disabled={submittingReview || myRating < 1}
+                      className="btn-primary px-5 py-2 rounded-lg text-[0.78rem] font-bold flex items-center gap-2 disabled:opacity-50">
+                      {submittingReview ? <Loader2 size={13} className="animate-spin" /> : <Send size={13} />} Submit Review
+                    </button>
+                    {reviewMsg && <span className={`text-[0.72rem] ${reviewMsg.includes('Thank') ? 'text-[#4ade80]' : 'text-[#f87171]'}`}>{reviewMsg}</span>}
+                  </div>
+                </div>
+              ) : (
+                <div className="glass rounded-xl p-5 mb-2 flex items-center justify-between">
+                  <span className="text-[0.78rem] text-[rgba(255,255,255,0.4)]">Sign in to rate and review this preset</span>
+                  <Link href="/login" className="btn-white px-4 py-2 rounded-lg text-[0.76rem] font-medium">Sign In</Link>
+                </div>
+              )}
+
               {preset.reviews.length > 0 ? preset.reviews.map(r => (
                 <div key={r.id} className="glass rounded-xl p-5">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-8 h-8 rounded-full glass-strong flex items-center justify-center text-[0.65rem] font-bold">
-                      {(r.user.displayName || r.user.username).charAt(0).toUpperCase()}
-                    </div>
+                    {r.user.avatarUrl ? (
+                      <img src={r.user.avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover" />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full glass-strong flex items-center justify-center text-[0.65rem] font-bold">
+                        {(r.user.displayName || r.user.username).charAt(0).toUpperCase()}
+                      </div>
+                    )}
                     <div className="flex-1">
                       <div className="text-[0.8rem] font-semibold">{r.user.displayName || r.user.username}</div>
                       <div className="flex items-center gap-2">
@@ -312,9 +377,13 @@ export default function PresetDetailPage() {
             <div className="mt-6 pt-6 border-t border-[rgba(255,255,255,0.04)]">
               <div className="text-[0.65rem] text-[rgba(255,255,255,0.2)] uppercase tracking-wider font-semibold mb-3">Creator</div>
               <Link href={`/creator/${preset.author.username}`} className="flex items-center gap-3 group">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-[0.75rem] font-bold text-white">
-                  {(preset.author.displayName || preset.author.username).charAt(0).toUpperCase()}
-                </div>
+                {preset.author.avatarUrl ? (
+                  <img src={preset.author.avatarUrl} alt="" className="w-10 h-10 rounded-full object-cover" />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-[0.75rem] font-bold text-white">
+                    {(preset.author.displayName || preset.author.username).charAt(0).toUpperCase()}
+                  </div>
+                )}
                 <div>
                   <div className="text-[0.82rem] font-semibold group-hover:text-[#60a5fa] transition-colors">{preset.author.displayName || preset.author.username}</div>
                   <div className="text-[0.65rem] text-[rgba(255,255,255,0.3)]">@{preset.author.username} · View profile →</div>
