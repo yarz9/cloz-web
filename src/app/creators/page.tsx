@@ -3,9 +3,10 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Users, Search, Star, Download, Package, CheckCircle2, Crown, Loader2, UserPlus } from 'lucide-react'
 import { ROLE_LABELS, ROLE_COLORS } from '@/lib/roles'
+import { UidTag } from '@/components/RoleBadge'
 
 interface Creator {
-  id: string; username: string; displayName: string | null; avatarUrl: string | null; bio: string | null
+  id: string; uid?: number; username: string; displayName: string | null; avatarUrl: string | null; bio: string | null
   role: string; verified: boolean; presetCount: number; followers: number; downloads: number; avgRating: number
 }
 
@@ -79,7 +80,7 @@ export default function CreatorsPage() {
                       </span>
                     )}
                   </div>
-                  <div className="text-[0.66rem] text-[rgba(255,255,255,0.3)]">@{c.username}</div>
+                  <div className="text-[0.66rem] text-[rgba(255,255,255,0.3)] flex items-center gap-1.5">@{c.username} <UidTag uid={c.uid} /></div>
                 </div>
               </div>
               {c.bio && <p className="text-[0.72rem] text-[rgba(255,255,255,0.4)] leading-relaxed mb-4 line-clamp-2">{c.bio}</p>}

@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
     prisma.preset.findMany({
       where, orderBy, skip: (page - 1) * limit, take: limit,
       include: {
-        author: { select: { id: true, username: true, displayName: true, avatarUrl: true } },
+        author: { select: { id: true, uid: true, username: true, displayName: true, avatarUrl: true, role: true } },
         _count: { select: { reviews: true, favorites: true } },
       },
     }),

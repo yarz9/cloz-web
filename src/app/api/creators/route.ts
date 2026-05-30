@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
       ...(search ? { OR: [{ username: { contains: search } }, { displayName: { contains: search } }] } : {}),
     },
     select: {
-      id: true, username: true, displayName: true, avatarUrl: true, bio: true, role: true, verified: true, createdAt: true,
+      id: true, uid: true, username: true, displayName: true, avatarUrl: true, bio: true, role: true, verified: true, createdAt: true,
       presets: { where: { published: true }, select: { downloadCount: true, ratingAvg: true, ratingCount: true } },
       _count: { select: { presets: { where: { published: true } }, followers: true } },
     },
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
     const rated = u.presets.filter(p => p.ratingCount > 0)
     const avgRating = rated.length ? rated.reduce((s, p) => s + p.ratingAvg, 0) / rated.length : 0
     return {
-      id: u.id, username: u.username, displayName: u.displayName, avatarUrl: u.avatarUrl, bio: u.bio,
+      id: u.id, uid: u.uid, username: u.username, displayName: u.displayName, avatarUrl: u.avatarUrl, bio: u.bio,
       role: u.role, verified: u.verified,
       presetCount: u._count.presets, followers: u._count.followers,
       downloads, avgRating: Math.round(avgRating * 10) / 10,

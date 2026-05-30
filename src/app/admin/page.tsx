@@ -9,7 +9,7 @@ import {
 } from 'lucide-react'
 
 interface AdminUser {
-  id: string; email: string; username: string; displayName: string | null; avatarUrl: string | null
+  id: string; uid?: number; email: string; username: string; displayName: string | null; avatarUrl: string | null
   role: string; verified: boolean; frozen: boolean; plan: string; createdAt: string
   _count: { presets: number; reviews: number; followers: number }
 }
@@ -142,7 +142,7 @@ export default function AdminPage() {
                     {u.verified && <CheckCircle2 size={12} className="text-[#60a5fa]" />}
                     {u.frozen && <Snowflake size={12} className="text-[#7dd3fc]" />}
                   </div>
-                  <div className="text-[0.66rem] text-[rgba(255,255,255,0.3)]">@{u.username} · {u.email} · {u.plan}</div>
+                  <div className="text-[0.66rem] text-[rgba(255,255,255,0.3)]">#{u.uid ?? '—'} · @{u.username} · {u.email} · {u.plan}</div>
                 </div>
 
                 {manageable ? (

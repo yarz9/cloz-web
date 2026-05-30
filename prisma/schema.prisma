@@ -11,6 +11,7 @@ datasource db {
 
 model User {
   id            String   @id @default(uuid())
+  uid           Int      @unique @default(autoincrement()) // sequential public user ID (#1, #2, …)
   email         String   @unique
   username      String   @unique
   passwordHash  String

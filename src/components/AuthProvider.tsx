@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 
 export interface ClozUser {
   id: string
+  uid?: number
   email: string
   username: string
   displayName: string | null

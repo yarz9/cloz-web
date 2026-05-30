@@ -7,6 +7,7 @@ import {
   Package, Download, Star, Users, Shield, Sparkles, CheckCircle2,
   Loader2, Calendar, UserPlus, UserCheck, Crown
 } from 'lucide-react'
+import { RoleBadge, UidTag } from '@/components/RoleBadge'
 
 export default function CreatorProfilePage() {
   const params = useParams()
@@ -61,11 +62,9 @@ export default function CreatorProfilePage() {
             <div className="flex items-center gap-2 mb-1">
               <h1 className="text-2xl font-extrabold">{profile.displayName || profile.username}</h1>
               {profile.verified && <CheckCircle2 size={18} className="text-[#60a5fa]" />}
-              {profile.role === 'admin' && (
-                <span className="px-2 py-0.5 rounded-full text-[0.55rem] font-bold bg-[rgba(96,165,250,0.1)] text-[#60a5fa] border border-[rgba(96,165,250,0.2)]">Official</span>
-              )}
+              <RoleBadge role={profile.role} />
             </div>
-            <p className="text-[0.8rem] text-[rgba(255,255,255,0.4)]">@{profile.username}</p>
+            <p className="text-[0.8rem] text-[rgba(255,255,255,0.4)] flex items-center gap-2">@{profile.username} <UidTag uid={profile.uid} /></p>
             {profile.bio && <p className="text-[0.82rem] text-[rgba(255,255,255,0.5)] mt-3 max-w-lg leading-relaxed">{profile.bio}</p>}
             <div className="flex items-center gap-2 mt-3 text-[0.68rem] text-[rgba(255,255,255,0.25)]">
               <Calendar size={11} /> Joined {new Date(profile.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}

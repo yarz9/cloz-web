@@ -8,9 +8,9 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   const preset = await prisma.preset.findFirst({
     where: { OR: [{ id }, { slug: id }] },
     include: {
-      author: { select: { id: true, username: true, displayName: true, avatarUrl: true, bio: true } },
+      author: { select: { id: true, uid: true, username: true, displayName: true, avatarUrl: true, bio: true, role: true } },
       reviews: {
-        include: { user: { select: { username: true, displayName: true, avatarUrl: true } } },
+        include: { user: { select: { uid: true, username: true, displayName: true, avatarUrl: true, role: true } } },
         orderBy: { createdAt: 'desc' },
         take: 20,
       },

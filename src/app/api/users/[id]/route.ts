@@ -7,7 +7,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   const user = await prisma.user.findFirst({
     where: { OR: [{ id }, { username: id }] },
     select: {
-      id: true, username: true, displayName: true, avatarUrl: true, bio: true,
+      id: true, uid: true, username: true, displayName: true, avatarUrl: true, bio: true,
       role: true, verified: true, createdAt: true,
       presets: {
         where: { published: true },

@@ -5,6 +5,7 @@ import {
   Store, Palette, Gamepad2, Monitor, Puzzle, Star, Download, Search, Sparkles,
   SlidersHorizontal, Layout, Layers, Shield, Crown, ArrowRight, Loader2, Lock
 } from 'lucide-react'
+import { RoleBadge } from '@/components/RoleBadge'
 
 const categories = [
   { id: 'all', label: 'All', icon: Store },
@@ -26,7 +27,7 @@ interface Preset {
   id: string; slug: string; name: string; description: string; category: string
   version: string; tags: string[]; downloadCount: number; ratingAvg: number; ratingCount: number
   verified: boolean; featured: boolean
-  author: { username: string; displayName: string | null }
+  author: { username: string; displayName: string | null; role?: string }
 }
 
 function PresetCard({ preset }: { preset: Preset }) {
@@ -45,7 +46,7 @@ function PresetCard({ preset }: { preset: Preset }) {
                 {preset.name}
                 {preset.verified && <Shield size={11} className="text-[#60a5fa]" />}
               </div>
-              <div className="text-[0.62rem] text-[rgba(255,255,255,0.3)]">by {preset.author.displayName || preset.author.username}</div>
+              <div className="text-[0.62rem] text-[rgba(255,255,255,0.3)] flex items-center gap-1.5">by {preset.author.displayName || preset.author.username} <RoleBadge role={preset.author.role} size="xs" /></div>
             </div>
           </div>
           <span className="text-[0.58rem] text-[rgba(255,255,255,0.2)]">v{preset.version}</span>

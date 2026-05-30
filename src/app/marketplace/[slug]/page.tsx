@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useAuth } from '@/components/AuthProvider'
+import { RoleBadge, UidTag } from '@/components/RoleBadge'
 import {
   Star, Download, Heart, Shield, ArrowLeft, Clock, Tag, Monitor,
   ChevronRight, User, MessageSquare, CheckCircle2, Sparkles, Copy,
@@ -14,8 +15,8 @@ interface PresetDetail {
   category: string; version: string; tags: string[]; screenshots: string[]
   downloadCount: number; ratingAvg: number; ratingCount: number
   verified: boolean; featured: boolean; createdAt: string; updatedAt: string
-  author: { id: string; username: string; displayName: string | null; avatarUrl: string | null; bio: string | null }
-  reviews: { id: string; rating: number; comment: string | null; createdAt: string; user: { username: string; displayName: string | null; avatarUrl: string | null } }[]
+  author: { id: string; uid?: number; username: string; displayName: string | null; avatarUrl: string | null; bio: string | null; role?: string }
+  reviews: { id: string; rating: number; comment: string | null; createdAt: string; user: { uid?: number; username: string; displayName: string | null; avatarUrl: string | null; role?: string } }[]
   versions: { id: string; version: string; changelog: string | null; createdAt: string }[]
   _count: { reviews: number; favorites: number; downloads: number }
   isFavorited: boolean
@@ -283,7 +284,11 @@ export default function PresetDetailPage() {
                       </div>
                     )}
                     <div className="flex-1">
-                      <div className="text-[0.8rem] font-semibold">{r.user.displayName || r.user.username}</div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-[0.8rem] font-semibold">{r.user.displayName || r.user.username}</span>
+                        <RoleBadge role={r.user.role} size="xs" />
+                        <UidTag uid={r.user.uid} />
+                      </div>
                       <div className="flex items-center gap-2">
                         <StarRating rating={r.rating} size={11} />
                         <span className="text-[0.62rem] text-[rgba(255,255,255,0.2)]">
@@ -385,8 +390,11 @@ export default function PresetDetailPage() {
                   </div>
                 )}
                 <div>
-                  <div className="text-[0.82rem] font-semibold group-hover:text-[#60a5fa] transition-colors">{preset.author.displayName || preset.author.username}</div>
-                  <div className="text-[0.65rem] text-[rgba(255,255,255,0.3)]">@{preset.author.username} · View profile →</div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[0.82rem] font-semibold group-hover:text-[#60a5fa] transition-colors">{preset.author.displayName || preset.author.username}</span>
+                    <RoleBadge role={preset.author.role} size="xs" />
+                  </div>
+                  <div className="text-[0.65rem] text-[rgba(255,255,255,0.3)] flex items-center gap-1.5">@{preset.author.username} <UidTag uid={preset.author.uid} /> · View profile →</div>
                 </div>
               </Link>
               {preset.author.bio && (
