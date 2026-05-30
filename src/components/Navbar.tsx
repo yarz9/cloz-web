@@ -1,8 +1,9 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Zap, Menu, X, Download, ChevronDown, User, LayoutDashboard, Store, LogOut, Settings, Crown } from 'lucide-react'
+import { Zap, Menu, X, Download, ChevronDown, User, LayoutDashboard, Store, LogOut, Settings, Crown, ShieldCheck } from 'lucide-react'
 import { useAuth } from './AuthProvider'
+import { isStaff } from '@/lib/roles'
 
 const navLinks = [
   { href: '/features', label: 'Features' },
@@ -47,6 +48,7 @@ function UserMenu() {
               { href: '/dashboard', label: 'Creator Dashboard', icon: LayoutDashboard },
               { href: `/creator/${user.username}`, label: 'My Profile', icon: Store },
               { href: '/account?tab=settings', label: 'Settings', icon: Settings },
+              ...(isStaff(user.role) ? [{ href: '/admin', label: 'Admin Panel', icon: ShieldCheck }] : []),
             ].map(item => (
               <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
                 className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[0.78rem] text-[rgba(255,255,255,0.5)] hover:text-white hover:bg-[rgba(255,255,255,0.04)] transition-all">

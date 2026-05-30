@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { Users, Search, Star, Download, Package, CheckCircle2, Crown, Loader2, UserPlus } from 'lucide-react'
+import { ROLE_LABELS, ROLE_COLORS } from '@/lib/roles'
 
 interface Creator {
   id: string; username: string; displayName: string | null; avatarUrl: string | null; bio: string | null
@@ -68,10 +69,15 @@ export default function CreatorsPage() {
                   {(c.displayName || c.username).charAt(0).toUpperCase()}
                 </div>
                 <div className="min-w-0">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-[0.92rem] font-bold truncate">{c.displayName || c.username}</span>
                     {c.verified && <CheckCircle2 size={13} className="text-[#60a5fa] shrink-0" />}
-                    {c.role === 'admin' && <Crown size={12} className="text-[#fbbf24] shrink-0" />}
+                    {c.role && c.role !== 'user' && (
+                      <span className="text-[0.55rem] font-bold px-1.5 py-0.5 rounded-full shrink-0"
+                        style={{ background: `${ROLE_COLORS[c.role] || '#94a3b8'}1a`, color: ROLE_COLORS[c.role] || '#94a3b8' }}>
+                        {ROLE_LABELS[c.role] || c.role}
+                      </span>
+                    )}
                   </div>
                   <div className="text-[0.66rem] text-[rgba(255,255,255,0.3)]">@{c.username}</div>
                 </div>

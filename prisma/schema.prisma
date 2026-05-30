@@ -19,8 +19,9 @@ model User {
   bio           String?
   discordId     String?  @unique
   hwids         String?  // JSON array of registered HWIDs
-  role          String   @default("user") // user | creator | admin
+  role          String   @default("user") // user | moderator | admin | founder | developer
   verified      Boolean  @default(false)
+  frozen        Boolean  @default(false) // frozen/banned — blocked from signing in & posting
   plan          String   @default("free") // free | pro | lifetime
   resetToken        String?
   resetTokenExpiry  DateTime?

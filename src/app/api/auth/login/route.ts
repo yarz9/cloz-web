@@ -22,6 +22,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
 
+    if (user.frozen) {
+      return NextResponse.json({ error: 'This account has been suspended. Contact support.' }, { status: 403 })
+    }
+
     const token = generateToken(user.id)
 
     const response = NextResponse.json({

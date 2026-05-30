@@ -40,7 +40,7 @@ export async function getCurrentUser() {
       where: { id: payload.userId },
       select: {
         id: true, email: true, username: true, displayName: true,
-        avatarUrl: true, bio: true, role: true, verified: true, discordId: true,
+        avatarUrl: true, bio: true, role: true, verified: true, frozen: true, discordId: true,
         plan: true, createdAt: true,
       },
     })
