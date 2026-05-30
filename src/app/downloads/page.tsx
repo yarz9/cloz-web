@@ -1,7 +1,8 @@
 import { Download, Monitor, Shield, CheckCircle2, HardDrive, Cpu, MemoryStick } from "lucide-react"
 
-const RELEASE_BASE = "https://github.com/yarz9/cloz-web/releases/latest/download"
-const INSTALLER_URL = `${RELEASE_BASE}/ClozOptimizer-Setup-2.0.0.exe`
+// Served through our own domain (see /api/download) so the file is delivered
+// from the website rather than a public GitHub URL.
+const INSTALLER_URL = "/api/download"
 
 const requirements = [
   { icon: Monitor, label: "OS", value: "Windows 10/11 (64-bit)" },

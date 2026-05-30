@@ -22,16 +22,6 @@ async function resolveUser(req: NextRequest) {
   return null
 }
 
-function planFromKey(key: string): 'monthly' | '3month' | 'yearly' | 'lifetime' | null {
-  const u = key.toUpperCase()
-  if (u === TEST_KEY) return 'lifetime'
-  if (u.includes('LIFETIME')) return 'lifetime'
-  if (u.includes('YEAR') || u.includes('12M')) return 'yearly'
-  if (u.includes('3M') || u.includes('QUARTER')) return '3month'
-  if (u.startsWith('CLOZ-') || u.startsWith('RC-')) return 'monthly'
-  return null
-}
-
 function expiryFor(plan: string): Date | null {
   const d = new Date()
   if (plan === 'monthly') { d.setMonth(d.getMonth() + 1); return d }
@@ -60,43 +50,40 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, plan: 'lifetime', tier: 'lifetime', expiresAt: null })
   }
 
-  // 1. Check if the key already exists in the License table
+  // Look up the key. Keys must have been pre-loaded into stock (via the Discord
+  // /restock command). Unknown keys are rejected — we never auto-create one.
   const existing = await prisma.license.findUnique({ where: { key: trimmed } })
 
-  if (existing) {
-    if (existing.status === 'revoked') {
-      return NextResponse.json({ error: 'This key has been revoked' }, { status: 403 })
-    }
-    if (existing.userId && existing.userId !== user.id) {
-      return NextResponse.json({ error: 'This key is already linked to another account' }, { status: 409 })
-    }
-    // Claim / re-affirm ownership
-    const updated = await prisma.license.update({
-      where: { id: existing.id },
-      data: {
-        userId: user.id, hwid: hwid || existing.hwid, status: 'active',
-        activatedAt: existing.activatedAt || new Date(),
-      },
-    })
-    await prisma.user.update({ where: { id: user.id }, data: { plan: PLAN_TIER[updated.plan] || 'pro' } })
-    return NextResponse.json({ success: true, plan: updated.plan, tier: PLAN_TIER[updated.plan] || 'pro', expiresAt: updated.expiresAt })
+  if (!existing) {
+    return NextResponse.json({ error: 'Invalid or unknown license key' }, { status: 400 })
+  }
+  if (existing.status === 'revoked') {
+    return NextResponse.json({ error: 'This key has been revoked' }, { status: 403 })
+  }
+  if (existing.userId && existing.userId !== user.id) {
+    return NextResponse.json({ error: 'This key is already linked to another account' }, { status: 409 })
   }
 
-  // 2. New key — validate format and create a linked license
-  const plan = planFromKey(trimmed)
-  if (!plan) {
-    return NextResponse.json({ error: 'Invalid license key' }, { status: 400 })
+  // Already this user's key — re-affirm without resetting the clock
+  if (existing.userId === user.id && existing.status === 'active') {
+    await prisma.user.update({ where: { id: user.id }, data: { plan: PLAN_TIER[existing.plan] || 'pro' } })
+    return NextResponse.json({ success: true, plan: existing.plan, tier: PLAN_TIER[existing.plan] || 'pro', expiresAt: existing.expiresAt })
   }
 
-  const created = await prisma.license.create({
+  // Claim an available key — bind to the user and start the subscription clock now
+  const updated = await prisma.license.update({
+    where: { id: existing.id },
     data: {
-      key: trimmed, userId: user.id, plan, status: 'active',
-      hwid: hwid || null, activatedAt: new Date(), expiresAt: expiryFor(plan),
+      userId: user.id,
+      hwid: hwid || existing.hwid,
+      status: 'active',
+      activatedAt: new Date(),
+      expiresAt: expiryFor(existing.plan),
     },
   })
-  await prisma.user.update({ where: { id: user.id }, data: { plan: PLAN_TIER[plan] || 'pro' } })
+  await prisma.user.update({ where: { id: user.id }, data: { plan: PLAN_TIER[updated.plan] || 'pro' } })
 
-  return NextResponse.json({ success: true, plan: created.plan, tier: PLAN_TIER[plan] || 'pro', expiresAt: created.expiresAt })
+  return NextResponse.json({ success: true, plan: updated.plan, tier: PLAN_TIER[updated.plan] || 'pro', expiresAt: updated.expiresAt })
 }
 
 // GET — list the user's licenses
