@@ -5,7 +5,7 @@ import { useAuth } from '@/components/AuthProvider'
 import { ROLES, ROLE_LABELS, ROLE_COLORS, rank } from '@/lib/roles'
 import {
   Shield, Users, Package, Search, Loader2, Trash2, Snowflake, CheckCircle2,
-  Star, Eye, EyeOff, ShieldCheck, Crown,
+  Star, Eye, EyeOff, ShieldCheck, Crown, BarChart3, TrendingUp, Download, Key,
 } from 'lucide-react'
 
 interface AdminUser {
@@ -30,9 +30,10 @@ function RoleBadge({ role }: { role: string }) {
 
 export default function AdminPage() {
   const { user, loading } = useAuth()
-  const [tab, setTab] = useState<'users' | 'marketplace'>('users')
+  const [tab, setTab] = useState<'analytics' | 'users' | 'marketplace'>('analytics')
   const [users, setUsers] = useState<AdminUser[]>([])
   const [presets, setPresets] = useState<AdminPreset[]>([])
+  const [stats, setStats] = useState<any>(null)
   const [search, setSearch] = useState('')
   const [busy, setBusy] = useState(false)
   const myRank = rank(user?.role)
@@ -55,11 +56,21 @@ export default function AdminPage() {
     } catch {} setBusy(false)
   }, [search])
 
+  const loadStats = useCallback(async () => {
+    setBusy(true)
+    try { const res = await fetch('/api/admin/analytics'); setStats(await res.json()) } catch {}
+    setBusy(false)
+  }, [])
+
   useEffect(() => {
     if (!user) return
-    const t = setTimeout(() => { tab === 'users' ? loadUsers() : loadPresets() }, 250)
+    const t = setTimeout(() => {
+      if (tab === 'users') loadUsers()
+      else if (tab === 'marketplace') loadPresets()
+      else loadStats()
+    }, 250)
     return () => clearTimeout(t)
-  }, [tab, user, loadUsers, loadPresets])
+  }, [tab, user, loadUsers, loadPresets, loadStats])
 
   const patchUser = async (id: string, body: any) => {
     const res = await fetch(`/api/admin/users/${id}`, {
@@ -108,15 +119,98 @@ export default function AdminPage() {
       <p className="text-[0.82rem] text-[rgba(255,255,255,0.4)] mb-8">Manage users, roles, and the marketplace.</p>
 
       <div className="flex gap-1 glass rounded-lg p-1 mb-6 w-fit">
-        {(['users', 'marketplace'] as const).map(t => (
+        {(['analytics', 'users', 'marketplace'] as const).map(t => (
           <button key={t} onClick={() => { setTab(t); setSearch('') }}
             className={`px-5 py-2 rounded-md text-[0.8rem] font-medium capitalize flex items-center gap-2 transition-all ${tab === t ? 'glass-strong text-white' : 'text-[rgba(255,255,255,0.4)] hover:text-white'}`}>
-            {t === 'users' ? <Users size={14} /> : <Package size={14} />} {t}
+            {t === 'analytics' ? <BarChart3 size={14} /> : t === 'users' ? <Users size={14} /> : <Package size={14} />} {t}
           </button>
         ))}
       </div>
 
-      <div className="relative mb-5">
+      {tab === 'analytics' && stats && (
+        <div className="space-y-5 mb-4">
+          {/* Stat cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: 'Total Users', value: stats.users.total, sub: `+${stats.users.new7d} this week`, icon: Users, color: '#60a5fa' },
+              { label: 'Pro / Lifetime', value: stats.users.pro, sub: `${stats.users.frozen} frozen`, icon: Crown, color: '#fbbf24' },
+              { label: 'Total Downloads', value: stats.content.downloads.toLocaleString(), sub: `${stats.content.presets} presets`, icon: Download, color: '#4ade80' },
+              { label: 'Reviews', value: stats.content.reviews, sub: `${stats.content.favorites} favorites`, icon: Star, color: '#a78bfa' },
+            ].map(c => (
+              <div key={c.label} className="glass rounded-2xl p-5">
+                <c.icon size={18} style={{ color: c.color }} className="mb-3" />
+                <div className="text-2xl font-extrabold">{c.value}</div>
+                <div className="text-[0.72rem] text-[rgba(255,255,255,0.4)] mt-1">{c.label}</div>
+                <div className="text-[0.62rem] text-[rgba(255,255,255,0.25)] mt-1 flex items-center gap-1"><TrendingUp size={10} /> {c.sub}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {/* Key stock */}
+            <div className="glass rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-4"><Key size={15} className="text-[#fbbf24]" /><h3 className="text-[0.9rem] font-bold">License Stock</h3></div>
+              <div className="space-y-2">
+                {(['monthly', '3month', 'yearly', 'lifetime'] as const).map(p => {
+                  const s = stats.stock[p] || { available: 0, sold: 0 }
+                  const label = { monthly: '1 Month', '3month': '3 Months', yearly: '12 Months', lifetime: 'Lifetime' }[p]
+                  return (
+                    <div key={p} className="flex items-center justify-between text-[0.78rem]">
+                      <span className="text-[rgba(255,255,255,0.5)]">{label}</span>
+                      <span className="flex items-center gap-3">
+                        <span className={s.available < 25 ? 'text-[#f87171]' : 'text-[#4ade80]'}>{s.available} avail</span>
+                        <span className="text-[rgba(255,255,255,0.35)]">{s.sold} sold</span>
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Roles breakdown */}
+            <div className="glass rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-4"><ShieldCheck size={15} className="text-[#60a5fa]" /><h3 className="text-[0.9rem] font-bold">Users by Role</h3></div>
+              <div className="space-y-2">
+                {['developer', 'founder', 'admin', 'moderator', 'user'].map(r => (
+                  <div key={r} className="flex items-center justify-between text-[0.78rem]">
+                    <span style={{ color: ROLE_COLORS[r] || '#94a3b8' }}>{ROLE_LABELS[r] || r}</span>
+                    <span className="font-semibold text-[rgba(255,255,255,0.6)]">{stats.users.byRole[r] || 0}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Recent signups + top presets */}
+          <div className="grid md:grid-cols-2 gap-5">
+            <div className="glass rounded-2xl p-6">
+              <h3 className="text-[0.9rem] font-bold mb-4">Recent Signups</h3>
+              <div className="space-y-2">
+                {stats.recentUsers.map((u: any) => (
+                  <div key={u.uid} className="flex items-center justify-between text-[0.75rem]">
+                    <span className="text-[rgba(255,255,255,0.55)]">#{u.uid} @{u.username}</span>
+                    <span className="text-[rgba(255,255,255,0.3)]">{new Date(u.createdAt).toLocaleDateString()}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="glass rounded-2xl p-6">
+              <h3 className="text-[0.9rem] font-bold mb-4">Top Presets</h3>
+              <div className="space-y-2">
+                {stats.topPresets.map((p: any) => (
+                  <div key={p.slug} className="flex items-center justify-between text-[0.75rem]">
+                    <span className="text-[rgba(255,255,255,0.55)] truncate">{p.name}</span>
+                    <span className="text-[rgba(255,255,255,0.3)] flex items-center gap-1 shrink-0"><Download size={10} /> {p.downloadCount}</span>
+                  </div>
+                ))}
+                {stats.topPresets.length === 0 && <div className="text-[0.72rem] text-[rgba(255,255,255,0.3)]">No presets yet</div>}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className={`relative mb-5 ${tab === 'analytics' ? 'hidden' : ''}`}>
         <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 text-[rgba(255,255,255,0.2)]" />
         <input value={search} onChange={e => setSearch(e.target.value)}
           placeholder={tab === 'users' ? 'Search users…' : 'Search presets…'}

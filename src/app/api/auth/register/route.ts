@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { hashPassword, generateToken, setAuthCookie } from '@/lib/auth'
+import { sendVerificationEmail } from '@/lib/email'
+import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
   try {
@@ -26,10 +28,14 @@ export async function POST(req: NextRequest) {
     }
 
     const passwordHash = await hashPassword(password)
+    const verifyToken = crypto.randomBytes(32).toString('hex')
     const user = await prisma.user.create({
-      data: { email, username, passwordHash, displayName: username },
+      data: { email, username, passwordHash, displayName: username, verifyToken },
       select: { id: true, email: true, username: true, displayName: true, role: true },
     })
+
+    // Fire-and-forget verification email (no-op if RESEND_API_KEY unset)
+    sendVerificationEmail(email, verifyToken).catch(() => {})
 
     const token = generateToken(user.id)
 

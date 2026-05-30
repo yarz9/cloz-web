@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { sendPasswordResetEmail } from '@/lib/email'
 import crypto from 'crypto'
 
 // POST — request a password reset token
@@ -17,8 +18,8 @@ export async function POST(req: NextRequest) {
       where: { id: user.id },
       data: { resetToken: token, resetTokenExpiry: expiry },
     })
-    // In production: send email with reset link.
-    // For now we return the token in dev so the flow is testable.
+    // Send the reset email (no-op if RESEND_API_KEY is unset)
+    await sendPasswordResetEmail(user.email, token)
     return NextResponse.json({
       success: true,
       message: 'If an account exists, a reset link has been sent.',
