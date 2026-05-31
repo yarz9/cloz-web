@@ -27,6 +27,19 @@ function AccountContent() {
   const [licenses, setLicenses] = useState<any[]>([])
   const [avatarUploading, setAvatarUploading] = useState(false)
   const [avatarMsg, setAvatarMsg] = useState('')
+  const [verifyBusy, setVerifyBusy] = useState(false)
+  const [verifyMsg, setVerifyMsg] = useState('')
+
+  const resendVerification = async () => {
+    setVerifyBusy(true); setVerifyMsg('')
+    try {
+      const res = await fetch('/api/auth/verify-email', { method: 'POST' })
+      if (res.ok) setVerifyMsg('Verification email sent — check your inbox.')
+      else if (res.status === 429) setVerifyMsg('Please wait a moment before requesting again.')
+      else setVerifyMsg('Could not send — try again shortly.')
+    } catch { setVerifyMsg('Connection error') }
+    setVerifyBusy(false)
+  }
 
   useEffect(() => {
     if (user) {
@@ -191,6 +204,28 @@ function AccountContent() {
           <p className="text-[0.82rem] text-[rgba(255,255,255,0.4)]">@{user.username} · {user.email}</p>
         </div>
       </div>
+
+      {/* Email verification banner */}
+      {searchParams.get('verified') === '1' && (
+        <div className="mb-6 px-5 py-3 rounded-xl bg-[rgba(74,222,128,0.08)] border border-[rgba(74,222,128,0.15)] text-[#4ade80] text-[0.82rem] flex items-center gap-2">
+          <CheckCircle2 size={15} /> Your email is verified. Thanks!
+        </div>
+      )}
+      {!user.verified && searchParams.get('verified') !== '1' && (
+        <div className="mb-6 px-5 py-4 rounded-xl bg-[rgba(251,191,36,0.07)] border border-[rgba(251,191,36,0.18)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <AlertTriangle size={16} className="text-[#fbbf24] shrink-0" />
+            <div>
+              <div className="text-[0.82rem] font-semibold">Verify your email</div>
+              <div className="text-[0.72rem] text-[rgba(255,255,255,0.4)]">{verifyMsg || `We sent a link to ${user.email}. Verify to secure your account.`}</div>
+            </div>
+          </div>
+          <button onClick={resendVerification} disabled={verifyBusy}
+            className="btn-white px-4 py-2 rounded-lg text-[0.78rem] font-medium whitespace-nowrap shrink-0 flex items-center gap-2">
+            {verifyBusy ? <Loader2 size={13} className="animate-spin" /> : <Mail size={13} />} Resend email
+          </button>
+        </div>
+      )}
 
       <div className="grid md:grid-cols-[200px_1fr] gap-8">
         {/* Sidebar tabs */}
