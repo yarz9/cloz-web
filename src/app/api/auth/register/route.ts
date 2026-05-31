@@ -2,22 +2,31 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { hashPassword, generateToken, setAuthCookie } from '@/lib/auth'
 import { sendVerificationEmail } from '@/lib/email'
+import { checkRateLimit } from '@/lib/rate-limit'
 import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, username, password } = await req.json()
+    const limited = checkRateLimit('register', req, 5, 60_000)
+    if (limited) return limited
+
+    let { email, username, password } = await req.json()
 
     if (!email || !username || !password) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    if (password.length < 8) {
-      return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 })
-    }
+    email = String(email).trim().toLowerCase()
+    username = String(username).trim()
 
-    if (username.length < 3 || !/^[a-zA-Z0-9_-]+$/.test(username)) {
-      return NextResponse.json({ error: 'Username must be 3+ chars, alphanumeric' }, { status: 400 })
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 120) {
+      return NextResponse.json({ error: 'Please enter a valid email address' }, { status: 400 })
+    }
+    if (password.length < 8 || password.length > 200) {
+      return NextResponse.json({ error: 'Password must be 8-200 characters' }, { status: 400 })
+    }
+    if (username.length < 3 || username.length > 24 || !/^[a-zA-Z0-9_-]+$/.test(username)) {
+      return NextResponse.json({ error: 'Username must be 3-24 chars, letters/numbers/_/-' }, { status: 400 })
     }
 
     const existing = await prisma.user.findFirst({

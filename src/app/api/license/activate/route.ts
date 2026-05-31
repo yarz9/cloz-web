@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getCurrentUser, verifyToken } from '@/lib/auth'
 import { syncDiscordRoles } from '@/lib/discord-roles'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 const TEST_KEY = 'CLOZ-TEST-PRO-2024'
 
@@ -36,6 +37,10 @@ const PLAN_TIER: Record<string, string> = {
 }
 
 export async function POST(req: NextRequest) {
+  // Throttle to stop key-guessing/brute-force
+  const limited = checkRateLimit('activate', req, 8, 60_000)
+  if (limited) return limited
+
   const user = await resolveUser(req)
   if (!user) return NextResponse.json({ error: 'Sign in required' }, { status: 401 })
 

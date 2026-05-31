@@ -1,14 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
+  const limited = checkRateLimit('review', req, 15, 60_000)
+  if (limited) return limited
+
   const user = await getCurrentUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { presetId, rating, comment } = await req.json()
   if (!presetId || !rating || rating < 1 || rating > 5) {
     return NextResponse.json({ error: 'Invalid rating (1-5 required)' }, { status: 400 })
+  }
+  if (comment != null && (typeof comment !== 'string' || comment.length > 1000)) {
+    return NextResponse.json({ error: 'Comment too long (max 1000 chars)' }, { status: 400 })
   }
 
   try {

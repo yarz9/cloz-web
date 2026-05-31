@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { sendPasswordResetEmail } from '@/lib/email'
+import { checkRateLimit } from '@/lib/rate-limit'
 import crypto from 'crypto'
 
 // POST — request a password reset token
 export async function POST(req: NextRequest) {
+  const limited = checkRateLimit('forgot', req, 5, 60_000)
+  if (limited) return limited
+
   const { email } = await req.json()
   if (!email) return NextResponse.json({ error: 'Email required' }, { status: 400 })
 
-  const user = await prisma.user.findUnique({ where: { email } })
+  const user = await prisma.user.findUnique({ where: { email: String(email).trim().toLowerCase() } })
 
   // Always return success to avoid email enumeration
   if (user) {

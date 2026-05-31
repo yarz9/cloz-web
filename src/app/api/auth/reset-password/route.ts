@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { hashPassword } from '@/lib/auth'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 // POST — consume reset token and set a new password
 export async function POST(req: NextRequest) {
+  const limited = checkRateLimit('reset', req, 10, 60_000)
+  if (limited) return limited
+
   const { token, password } = await req.json()
   if (!token || !password) {
     return NextResponse.json({ error: 'Token and password required' }, { status: 400 })

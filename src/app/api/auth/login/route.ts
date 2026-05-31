@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { verifyPassword, generateToken, setAuthCookie } from '@/lib/auth'
+import { checkRateLimit } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
   try {
+    const limited = checkRateLimit('login', req, 10, 60_000)
+    if (limited) return limited
+
     const { email, password } = await req.json()
 
     if (!email || !password) {
@@ -11,7 +15,7 @@ export async function POST(req: NextRequest) {
     }
 
     const user = await prisma.user.findFirst({
-      where: { OR: [{ email }, { username: email }] },
+      where: { OR: [{ email: String(email).trim().toLowerCase() }, { username: String(email).trim() }] },
     })
     if (!user) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
