@@ -27,6 +27,7 @@ interface Preset {
   id: string; slug: string; name: string; description: string; category: string
   version: string; tags: string[]; downloadCount: number; ratingAvg: number; ratingCount: number
   verified: boolean; featured: boolean
+  price: number
   author: { username: string; displayName: string | null; role?: string }
 }
 
@@ -49,7 +50,9 @@ function PresetCard({ preset }: { preset: Preset }) {
               <div className="text-[0.62rem] text-[rgba(255,255,255,0.3)] flex items-center gap-1.5">by {preset.author.displayName || preset.author.username} <RoleBadge role={preset.author.role} size="xs" /></div>
             </div>
           </div>
-          <span className="text-[0.58rem] text-[rgba(255,255,255,0.2)]">v{preset.version}</span>
+          {preset.price > 0
+            ? <span className="text-[0.62rem] font-bold px-2 py-0.5 rounded-full bg-[rgba(251,191,36,0.12)] text-[#fbbf24] shrink-0">{preset.price} C$</span>
+            : <span className="text-[0.6rem] font-bold px-2 py-0.5 rounded-full bg-[rgba(74,222,128,0.1)] text-[#4ade80] shrink-0">Free</span>}
         </div>
         <p className="text-[0.7rem] text-[rgba(255,255,255,0.35)] leading-relaxed mb-3 line-clamp-2">{preset.description}</p>
         <div className="flex gap-1.5 mb-3 flex-wrap">

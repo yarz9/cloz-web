@@ -12,6 +12,7 @@ export interface ClozUser {
   role: string
   verified: boolean
   plan?: string
+  credits?: number
   discordId?: string | null
 }
 

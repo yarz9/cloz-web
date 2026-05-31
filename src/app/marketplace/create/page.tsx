@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/components/AuthProvider'
+import { canSell } from '@/lib/roles'
 import { Upload, Loader2, CheckCircle2, ArrowLeft, Palette, Gamepad2, Monitor, SlidersHorizontal, Layers, Layout, Puzzle, Shield } from 'lucide-react'
 
 const categories = [
@@ -18,7 +19,7 @@ const categories = [
 export default function CreatePresetPage() {
   const { user, loading } = useAuth()
   const router = useRouter()
-  const [form, setForm] = useState({ name: '', description: '', longDesc: '', category: 'ui', tags: '', changelog: '', compatibility: '' })
+  const [form, setForm] = useState({ name: '', description: '', longDesc: '', category: 'ui', tags: '', changelog: '', compatibility: '', price: '' })
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
@@ -43,6 +44,7 @@ export default function CreatePresetPage() {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...form,
+          price: Number(form.price) || 0,
           tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
         }),
       })
@@ -111,6 +113,15 @@ export default function CreatePresetPage() {
           <input value={form.tags} onChange={e => setForm({ ...form, tags: e.target.value })}
             className="w-full glass rounded-lg py-3 px-4 text-[0.85rem] outline-none focus:border-[rgba(96,165,250,0.3)] transition-all" placeholder="Dark, Gaming, FPS" />
         </div>
+
+        {canSell(user.role) && (
+          <div>
+            <label className="block text-[0.72rem] text-[rgba(255,255,255,0.3)] font-medium mb-2">Price <span className="text-[#fbbf24]">(C$ — staff only)</span></label>
+            <input type="number" min={0} value={form.price} onChange={e => setForm({ ...form, price: e.target.value })}
+              className="w-full glass rounded-lg py-3 px-4 text-[0.85rem] outline-none focus:border-[rgba(251,191,36,0.3)] transition-all" placeholder="0 = free" />
+            <p className="text-[0.62rem] text-[rgba(255,255,255,0.3)] mt-1">Buyers pay this in credits; the amount is added to your balance. Leave 0 for a free listing.</p>
+          </div>
+        )}
 
         <div>
           <label className="block text-[0.72rem] text-[rgba(255,255,255,0.3)] font-medium mb-2">Compatibility</label>

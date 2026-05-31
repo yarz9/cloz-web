@@ -201,7 +201,10 @@ function AccountContent() {
             <h1 className="text-2xl font-extrabold">{user.displayName || user.username}</h1>
             {user.verified && <CheckCircle2 size={16} className="text-[#60a5fa]" />}
           </div>
-          <p className="text-[0.82rem] text-[rgba(255,255,255,0.4)]">@{user.username} · {user.email}</p>
+          <p className="text-[0.82rem] text-[rgba(255,255,255,0.4)] flex items-center gap-2 flex-wrap">
+            <span>@{user.username} · {user.email}</span>
+            <span className="text-[0.7rem] font-bold px-2 py-0.5 rounded-full bg-[rgba(251,191,36,0.12)] text-[#fbbf24]">{user.credits ?? 0} C$</span>
+          </p>
         </div>
       </div>
 

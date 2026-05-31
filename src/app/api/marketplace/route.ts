@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getCurrentUser, verifyToken } from '@/lib/auth'
+import { canSell } from '@/lib/roles'
 
 // Resolve user from cookie (website) OR Bearer token (desktop app)
 async function resolvePublisher(req: NextRequest) {
@@ -77,13 +78,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
+  // Paid listings are staff-only (admins/developers). Everyone else publishes free.
+  const dbUser = await prisma.user.findUnique({ where: { id: user.id }, select: { role: true } })
+  const price = canSell(dbUser?.role) ? Math.max(0, Math.min(100000, Math.round(Number(body.price) || 0))) : 0
+
   const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
   const existing = await prisma.preset.findUnique({ where: { slug } })
 
   const preset = await prisma.preset.create({
     data: {
       slug: existing ? `${slug}-${Date.now().toString(36)}` : slug,
-      name, description, longDesc, category,
+      name, description, longDesc, category, price,
       authorId: user.id,
       tags: tags ? JSON.stringify(tags) : null,
       configData: configData ? JSON.stringify(configData) : null,

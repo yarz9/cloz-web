@@ -24,6 +24,7 @@ model User {
   verified      Boolean  @default(false)
   frozen        Boolean  @default(false) // frozen/banned — blocked from signing in & posting
   plan          String   @default("free") // free | pro | lifetime
+  credits       Int      @default(0)     // marketplace credits (C$)
   resetToken        String?
   resetTokenExpiry  DateTime?
   verifyToken       String?
@@ -152,6 +153,7 @@ model Preset {
   description   String
   longDesc      String?
   category      String   // ui | game | windows | optimization | theme | dashboard | widget
+  price         Int      @default(0) // credits (C$); 0 = free. Only staff can set > 0
   authorId      String
   version       String   @default("1.0.0")
   tags          String?  // JSON array

@@ -32,6 +32,7 @@ export async function PATCH(req: NextRequest, ctx: { params: Promise<{ id: strin
   if (typeof body.frozen === 'boolean') data.frozen = body.frozen
   if (typeof body.verified === 'boolean') data.verified = body.verified
   if (typeof body.plan === 'string' && ['free', 'pro', 'lifetime'].includes(body.plan)) data.plan = body.plan
+  if (typeof body.credits === 'number' && isFinite(body.credits)) data.credits = Math.max(0, Math.round(body.credits))
 
   if (Object.keys(data).length === 0) return NextResponse.json({ error: 'Nothing to update' }, { status: 400 })
 

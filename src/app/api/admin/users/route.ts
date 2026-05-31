@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     where,
     select: {
       id: true, uid: true, email: true, username: true, displayName: true, avatarUrl: true,
-      role: true, verified: true, frozen: true, plan: true, createdAt: true,
+      role: true, verified: true, frozen: true, plan: true, credits: true, createdAt: true,
       _count: { select: { presets: true, reviews: true, followers: true } },
     },
     orderBy: { createdAt: 'desc' },

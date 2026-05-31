@@ -10,7 +10,7 @@ import {
 
 interface AdminUser {
   id: string; uid?: number; email: string; username: string; displayName: string | null; avatarUrl: string | null
-  role: string; verified: boolean; frozen: boolean; plan: string; createdAt: string
+  role: string; verified: boolean; frozen: boolean; plan: string; credits?: number; createdAt: string
   _count: { presets: number; reviews: number; followers: number }
 }
 interface AdminPreset {
@@ -236,7 +236,16 @@ export default function AdminPage() {
                     {u.verified && <CheckCircle2 size={12} className="text-[#60a5fa]" />}
                     {u.frozen && <Snowflake size={12} className="text-[#7dd3fc]" />}
                   </div>
-                  <div className="text-[0.66rem] text-[rgba(255,255,255,0.3)]">#{u.uid ?? '—'} · @{u.username} · {u.email} · {u.plan}</div>
+                  <div className="text-[0.66rem] text-[rgba(255,255,255,0.3)] flex items-center gap-1.5">
+                    #{u.uid ?? '—'} · @{u.username} · {u.email} · {u.plan}
+                    <span className="text-[#fbbf24]">· {u.credits ?? 0} C$</span>
+                    {manageable && (
+                      <button onClick={() => {
+                        const v = prompt(`Set credits for @${u.username}:`, String(u.credits ?? 0))
+                        if (v != null && !isNaN(Number(v))) patchUser(u.id, { credits: Math.max(0, Math.round(Number(v))) })
+                      }} className="text-[#60a5fa] hover:underline">edit</button>
+                    )}
+                  </div>
                 </div>
 
                 {manageable ? (

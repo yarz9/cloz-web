@@ -21,14 +21,17 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
   if (!preset) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  // Check if current user favorited
+  // Check if current user favorited / owns it
   const user = await getCurrentUser()
   let isFavorited = false
+  let owned = false
   if (user) {
     const fav = await prisma.favorite.findUnique({
       where: { presetId_userId: { presetId: preset.id, userId: user.id } },
     })
     isFavorited = !!fav
+    if (preset.authorId === user.id) owned = true
+    else owned = !!(await prisma.download.findFirst({ where: { presetId: preset.id, userId: user.id } }))
   }
 
   return NextResponse.json({
@@ -37,6 +40,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       tags: preset.tags ? JSON.parse(preset.tags) : [],
       screenshots: preset.screenshots ? JSON.parse(preset.screenshots) : [],
       isFavorited,
+      owned,
     },
   })
 }

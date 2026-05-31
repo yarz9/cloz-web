@@ -41,7 +41,7 @@ export async function getCurrentUser() {
       select: {
         id: true, uid: true, email: true, username: true, displayName: true,
         avatarUrl: true, bio: true, role: true, verified: true, frozen: true, discordId: true,
-        plan: true, createdAt: true,
+        plan: true, credits: true, createdAt: true,
       },
     })
     return user

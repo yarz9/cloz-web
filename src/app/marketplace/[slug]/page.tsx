@@ -12,9 +12,9 @@ import {
 
 interface PresetDetail {
   id: string; slug: string; name: string; description: string; longDesc: string | null
-  category: string; version: string; tags: string[]; screenshots: string[]
+  category: string; version: string; tags: string[]; screenshots: string[]; price: number
   downloadCount: number; ratingAvg: number; ratingCount: number
-  verified: boolean; featured: boolean; createdAt: string; updatedAt: string
+  verified: boolean; featured: boolean; createdAt: string; updatedAt: string; owned?: boolean
   author: { id: string; uid?: number; username: string; displayName: string | null; avatarUrl: string | null; bio: string | null; role?: string }
   reviews: { id: string; rating: number; comment: string | null; createdAt: string; user: { uid?: number; username: string; displayName: string | null; avatarUrl: string | null; role?: string } }[]
   versions: { id: string; version: string; changelog: string | null; createdAt: string }[]
@@ -43,6 +43,7 @@ export default function PresetDetailPage() {
   const [installing, setInstalling] = useState(false)
   const [installed, setInstalled] = useState(false)
   const [favorited, setFavorited] = useState(false)
+  const [buyMsg, setBuyMsg] = useState('')
   // Review form
   const [myRating, setMyRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
@@ -83,12 +84,14 @@ export default function PresetDetailPage() {
 
   const handleInstall = async () => {
     if (!preset) return
-    setInstalling(true)
+    if (!user) { setBuyMsg('Sign in to get this preset.'); return }
+    setInstalling(true); setBuyMsg('')
     try {
-      // Record the download/install against the preset, and add to the user's
-      // library (favorite) so it syncs to their account. Actual on-device
-      // installation happens in the ClozOptimizer desktop app.
-      await fetch(`/api/marketplace/${preset.id}`, { method: 'POST' })
+      // Acquire it — free presets just record ownership, paid ones spend credits.
+      const res = await fetch(`/api/marketplace/${preset.id}/buy`, { method: 'POST' })
+      const data = await res.json()
+      if (res.status === 402) { setBuyMsg(data.error || 'Not enough credits.'); setInstalling(false); return }
+      if (!res.ok) { setBuyMsg(data.error || 'Could not complete.'); setInstalling(false); return }
       if (!favorited) {
         await fetch('/api/favorites', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -96,7 +99,9 @@ export default function PresetDetailPage() {
         }).then(r => { if (r.ok) setFavorited(true) }).catch(() => {})
       }
       setInstalled(true)
-    } catch {}
+      setPreset(p => p ? { ...p, owned: true } : p)
+      if (data.spent) setBuyMsg(`Purchased for ${data.spent} C$ — ${data.balance} C$ left.`)
+    } catch { setBuyMsg('Connection error') }
     setInstalling(false)
   }
 
@@ -339,12 +344,24 @@ export default function PresetDetailPage() {
         <div className="space-y-4">
           {/* Install card */}
           <div className="glass-strong rounded-2xl p-6 sticky top-24">
-            <button onClick={handleInstall} disabled={installing || installed}
-              className="btn-primary w-full py-3.5 rounded-xl text-[0.88rem] font-bold flex items-center justify-center gap-2.5 mb-3">
-              {installing ? <Loader2 size={16} className="animate-spin" /> : installed ? <CheckCircle2 size={16} /> : <Download size={16} />}
-              {installing ? 'Adding…' : installed ? 'Added to your Library' : 'Get Preset'}
+            {/* Price */}
+            <div className="flex items-baseline gap-2 mb-3">
+              {preset.price > 0
+                ? <><span className="text-2xl font-extrabold text-[#fbbf24]">{preset.price}</span><span className="text-[0.8rem] text-[rgba(255,255,255,0.4)]">C$</span></>
+                : <span className="text-xl font-extrabold text-[#4ade80]">Free</span>}
+            </div>
+            {user && typeof user.credits === 'number' && (
+              <div className="text-[0.66rem] text-[rgba(255,255,255,0.35)] mb-3">Your balance: <span className="text-[#fbbf24] font-semibold">{user.credits} C$</span></div>
+            )}
+            <button onClick={handleInstall} disabled={installing || installed || preset.owned}
+              className="btn-primary w-full py-3.5 rounded-xl text-[0.88rem] font-bold flex items-center justify-center gap-2.5 mb-3 disabled:opacity-70">
+              {installing ? <Loader2 size={16} className="animate-spin" /> : (installed || preset.owned) ? <CheckCircle2 size={16} /> : <Download size={16} />}
+              {installing ? 'Processing…' : (installed || preset.owned) ? 'Owned' : preset.price > 0 ? `Buy for ${preset.price} C$` : 'Get Preset'}
             </button>
-            {installed && (
+            {buyMsg && (
+              <div className="mb-3 px-3 py-2.5 rounded-lg bg-[rgba(251,191,36,0.08)] border border-[rgba(251,191,36,0.15)] text-[0.72rem] text-[#fbbf24] leading-relaxed">{buyMsg}</div>
+            )}
+            {(installed || preset.owned) && (
               <div className="mb-3 px-3 py-2.5 rounded-lg bg-[rgba(74,222,128,0.08)] border border-[rgba(74,222,128,0.15)] text-[0.72rem] text-[#4ade80] leading-relaxed">
                 Added to your account. Open <span className="font-semibold">ClozOptimizer → Marketplace</span> (or My Items) on your PC to install it on this device.
               </div>
