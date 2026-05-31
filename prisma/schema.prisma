@@ -41,6 +41,35 @@ model User {
   sessions       Session[]
   following     Follow[]       @relation("Follower")
   followers     Follow[]       @relation("Following")
+  threads       Thread[]       @relation("ThreadAuthor")
+  posts         Post[]         @relation("PostAuthor")
+}
+
+// ==================== FORUM ====================
+
+model Thread {
+  id         String   @id @default(uuid())
+  title      String
+  content    String
+  category   String   @default("general") // announcements | general | support | presets | offtopic
+  authorId   String
+  pinned     Boolean  @default(false)
+  locked     Boolean  @default(false)
+  views      Int      @default(0)
+  createdAt  DateTime @default(now())
+  lastPostAt DateTime @default(now())
+  author     User     @relation("ThreadAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  posts      Post[]
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  threadId  String
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+  thread    Thread   @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  author    User     @relation("PostAuthor", fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Follow {

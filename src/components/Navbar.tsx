@@ -8,9 +8,9 @@ import { isStaff } from '@/lib/roles'
 const navLinks = [
   { href: '/features', label: 'Features' },
   { href: '/marketplace', label: 'Marketplace' },
+  { href: '/forum', label: 'Forum' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/downloads', label: 'Downloads' },
-  { href: '/media', label: 'Media' },
   { href: '/docs', label: 'Docs' },
 ]
 
