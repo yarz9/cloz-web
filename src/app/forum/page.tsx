@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { useAuth } from '@/components/AuthProvider'
 import { RoleBadge } from '@/components/RoleBadge'
+import ChatBox from '@/components/ChatBox'
 import {
   MessagesSquare, Search, Plus, Pin, Lock, MessageSquare, Eye, Loader2, Megaphone, HelpCircle, Package, Coffee, Hash,
 } from 'lucide-react'
@@ -37,6 +38,9 @@ export default function ForumPage() {
   const [loading, setLoading] = useState(true)
   const [cat, setCat] = useState('all')
   const [search, setSearch] = useState('')
+  const [stats, setStats] = useState<{ threads: number; posts: number; members: number } | null>(null)
+
+  useEffect(() => { fetch('/api/forum/stats').then(r => r.json()).then(setStats).catch(() => {}) }, [])
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -56,8 +60,8 @@ export default function ForumPage() {
   const catMeta = (id: string) => CATS.find(c => c.id === id) || CATS[2]
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-16">
-      <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+    <div className="max-w-6xl mx-auto px-6 py-16">
+      <div className="flex items-center justify-between mb-5 flex-wrap gap-4">
         <div>
           <h1 className="text-3xl font-extrabold flex items-center gap-3"><MessagesSquare className="text-[#60a5fa]" /> Community Forum</h1>
           <p className="text-[0.85rem] text-[rgba(255,255,255,0.4)] mt-1">Discuss optimization, share presets, get support.</p>
@@ -66,6 +70,14 @@ export default function ForumPage() {
           ? <Link href="/forum/new" className="btn-primary px-5 py-2.5 rounded-lg text-[0.82rem] font-bold flex items-center gap-2"><Plus size={15} /> New Thread</Link>
           : <Link href="/login?next=/forum" className="btn-white px-5 py-2.5 rounded-lg text-[0.82rem] font-medium">Sign in to post</Link>}
       </div>
+
+      {stats && (
+        <div className="flex gap-6 mb-5 text-[0.72rem] text-[rgba(255,255,255,0.4)]">
+          <span><b className="text-white font-bold">{stats.threads}</b> threads</span>
+          <span><b className="text-white font-bold">{stats.posts}</b> posts</span>
+          <span><b className="text-white font-bold">{stats.members}</b> members</span>
+        </div>
+      )}
 
       <div className="flex flex-col md:flex-row gap-3 mb-6">
         <div className="flex gap-1.5 flex-wrap">
@@ -83,6 +95,8 @@ export default function ForumPage() {
         </div>
       </div>
 
+      <div className="grid lg:grid-cols-[1fr_330px] gap-5 items-start">
+        <div>
       {loading ? (
         <div className="py-20 text-center"><Loader2 className="animate-spin mx-auto text-[rgba(255,255,255,0.2)]" /></div>
       ) : threads.length ? (
@@ -118,6 +132,9 @@ export default function ForumPage() {
           <p className="text-[rgba(255,255,255,0.3)]">No threads yet — start the conversation!</p>
         </div>
       )}
+        </div>
+        <div className="lg:sticky lg:top-20"><ChatBox /></div>
+      </div>
     </div>
   )
 }

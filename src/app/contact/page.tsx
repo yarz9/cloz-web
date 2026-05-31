@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { Mail, MessageCircle, Send, CheckCircle2, Loader2, Globe } from 'lucide-react'
+import { Mail, MessageCircle, Send, CheckCircle2, Loader2 } from 'lucide-react'
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' })
@@ -73,11 +73,11 @@ export default function ContactPage() {
         {/* Contact info sidebar */}
         <div className="space-y-4">
           {[
-            { icon: Mail, title: 'Email', value: 'support@cloz.dev', color: '#60a5fa' },
-            { icon: MessageCircle, title: 'Discord', value: 'discord.gg/cloz', color: '#7289da' },
-            { icon: Globe, title: 'Website', value: 'cloz.dev', color: '#4ade80' },
+            { icon: Mail, title: 'Email', value: 'general@cloz.digital', href: 'mailto:general@cloz.digital', color: '#60a5fa' },
+            { icon: MessageCircle, title: 'Discord', value: 'discord.gg/v9YqNckj9y', href: 'https://discord.gg/v9YqNckj9y', color: '#7289da' },
           ].map(c => (
-            <div key={c.title} className="glass rounded-xl p-5 flex items-center gap-4">
+            <a key={c.title} href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer"
+              className="glass rounded-xl p-5 flex items-center gap-4 glass-hover transition-all">
               <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
                 style={{ background: `${c.color}12`, border: `1px solid ${c.color}20` }}>
                 <c.icon size={16} style={{ color: c.color }} />
@@ -86,7 +86,7 @@ export default function ContactPage() {
                 <div className="text-[0.72rem] text-[rgba(255,255,255,0.3)]">{c.title}</div>
                 <div className="text-[0.82rem] font-medium">{c.value}</div>
               </div>
-            </div>
+            </a>
           ))}
 
           <div className="glass rounded-xl p-5">

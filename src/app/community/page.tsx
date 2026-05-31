@@ -1,11 +1,11 @@
 import Link from "next/link"
-import { Users, MessageCircle, Trophy, Star, Store, BookOpen, ArrowRight, Sparkles, Crown, Shield, Heart } from "lucide-react"
+import { Users, MessageCircle, Trophy, Star, Store, ArrowRight, Sparkles, Crown, Shield, Heart } from "lucide-react"
 
 const channels = [
-  { icon: MessageCircle, title: "Discord Server", desc: "Join 2,000+ members — get help, share presets, discuss optimization", color: "#7289da", href: "#", members: "2,400+" },
-  { icon: Store, title: "Marketplace", desc: "Browse and install community presets, game configs, and themes", color: "#4ade80", href: "/marketplace", members: "120+ presets" },
-  { icon: BookOpen, title: "Knowledge Base", desc: "Guides written by the community and dev team", color: "#60a5fa", href: "/docs", members: "50+ articles" },
-  { icon: Trophy, title: "Leaderboards", desc: "Top creators ranked by downloads, ratings, and contributions", color: "#fbbf24", href: "#", members: "Coming Soon" },
+  { icon: MessageCircle, title: "Discord Server", desc: "Join the community — get help, share presets, discuss optimization", color: "#7289da", href: "https://discord.gg/v9YqNckj9y", members: "Join us" },
+  { icon: MessageCircle, title: "Forum", desc: "Threads, support, and discussion with the community", color: "#a78bfa", href: "/forum", members: "Open" },
+  { icon: Store, title: "Marketplace", desc: "Browse and install community presets, game configs, and themes", color: "#4ade80", href: "/marketplace", members: "Browse" },
+  { icon: Trophy, title: "Creators", desc: "Top creators ranked by downloads, ratings, and contributions", color: "#fbbf24", href: "/creators", members: "Leaderboard" },
 ]
 
 const topCreators = [
@@ -31,7 +31,7 @@ export default function CommunityPage() {
       {/* Channel cards */}
       <div className="grid md:grid-cols-2 gap-4 mb-20">
         {channels.map(c => (
-          <Link key={c.title} href={c.href} className="glass rounded-xl p-6 glass-hover transition-all group flex items-start gap-4">
+          <Link key={c.title} href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} className="glass rounded-xl p-6 glass-hover transition-all group flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
               style={{ background: `${c.color}12`, border: `1px solid ${c.color}20` }}>
               <c.icon size={20} style={{ color: c.color }} />

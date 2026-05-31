@@ -44,6 +44,17 @@ model User {
   threads       Thread[]       @relation("ThreadAuthor")
   posts         Post[]         @relation("PostAuthor")
   notifications Notification[] @relation("NotifRecipient")
+  chatMessages  ChatMessage[]  @relation("ChatAuthor")
+}
+
+model ChatMessage {
+  id        String   @id @default(uuid())
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  user      User     @relation("ChatAuthor", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
 }
 
 model Notification {

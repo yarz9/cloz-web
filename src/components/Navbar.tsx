@@ -24,9 +24,13 @@ function UserMenu() {
     <div className="relative">
       <button onClick={() => setOpen(!open)}
         className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-lg glass glass-hover transition-all">
-        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-[0.7rem] font-bold text-white">
-          {(user.displayName || user.username).charAt(0).toUpperCase()}
-        </div>
+        {user.avatarUrl ? (
+          <img src={user.avatarUrl} alt="" className="w-7 h-7 rounded-full object-cover" />
+        ) : (
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-[0.7rem] font-bold text-white">
+            {(user.displayName || user.username).charAt(0).toUpperCase()}
+          </div>
+        )}
         <span className="text-[0.78rem] font-medium max-w-[100px] truncate">{user.displayName || user.username}</span>
         <ChevronDown size={13} className="text-[rgba(255,255,255,0.3)]" />
       </button>
