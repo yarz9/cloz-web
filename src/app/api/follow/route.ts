@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
+import { notify } from '@/lib/notify'
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser()
@@ -13,6 +14,11 @@ export async function POST(req: NextRequest) {
 
   try {
     await prisma.follow.create({ data: { followerId: user.id, followingId: userId } })
+    await notify({
+      userId, actorId: user.id, type: 'follow',
+      message: `${user.displayName || user.username} started following you`,
+      link: `/creator/${user.username}`,
+    })
     return NextResponse.json({ following: true })
   } catch {
     return NextResponse.json({ error: 'Already following' }, { status: 409 })

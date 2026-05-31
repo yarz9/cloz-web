@@ -43,6 +43,20 @@ model User {
   followers     Follow[]       @relation("Following")
   threads       Thread[]       @relation("ThreadAuthor")
   posts         Post[]         @relation("PostAuthor")
+  notifications Notification[] @relation("NotifRecipient")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   // recipient
+  type      String   // reply | review | follow | system
+  message   String
+  link      String?  // in-app path to open
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation("NotifRecipient", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
 }
 
 // ==================== FORUM ====================

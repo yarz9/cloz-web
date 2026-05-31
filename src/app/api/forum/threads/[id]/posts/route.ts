@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
 import { checkRateLimit } from '@/lib/rate-limit'
+import { notify } from '@/lib/notify'
 
 // POST — reply to a thread
 export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
@@ -13,7 +14,7 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   if ((user as any).frozen) return NextResponse.json({ error: 'Your account is suspended' }, { status: 403 })
 
   const { id } = await ctx.params
-  const thread = await prisma.thread.findUnique({ where: { id }, select: { id: true, locked: true } })
+  const thread = await prisma.thread.findUnique({ where: { id }, select: { id: true, locked: true, authorId: true, title: true } })
   if (!thread) return NextResponse.json({ error: 'Thread not found' }, { status: 404 })
   if (thread.locked) return NextResponse.json({ error: 'This thread is locked' }, { status: 403 })
 
@@ -25,5 +26,10 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     select: { id: true },
   })
   await prisma.thread.update({ where: { id }, data: { lastPostAt: new Date() } })
+  await notify({
+    userId: thread.authorId, actorId: user.id, type: 'reply',
+    message: `${user.displayName || user.username} replied to "${thread.title.slice(0, 50)}"`,
+    link: `/forum/${id}`,
+  })
   return NextResponse.json({ post })
 }

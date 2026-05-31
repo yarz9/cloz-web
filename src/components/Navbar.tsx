@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Zap, Menu, X, Download, ChevronDown, User, LayoutDashboard, Store, LogOut, Settings, Crown, ShieldCheck } from 'lucide-react'
 import { useAuth } from './AuthProvider'
 import { isStaff } from '@/lib/roles'
+import NotificationBell from './NotificationBell'
 
 const navLinks = [
   { href: '/features', label: 'Features' },
@@ -91,7 +92,10 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-3">
           {!loading && (user ? (
-            <UserMenu />
+            <div className="flex items-center gap-2">
+              <NotificationBell />
+              <UserMenu />
+            </div>
           ) : (
             <>
               <Link href="/login" className="px-4 py-2 text-[0.82rem] text-[rgba(255,255,255,0.5)] hover:text-white transition-colors">

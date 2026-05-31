@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getCurrentUser } from '@/lib/auth'
 import { checkRateLimit } from '@/lib/rate-limit'
+import { notify } from '@/lib/notify'
 
 export async function POST(req: NextRequest) {
   const limited = checkRateLimit('review', req, 15, 60_000)
@@ -35,6 +36,15 @@ export async function POST(req: NextRequest) {
       where: { id: presetId },
       data: { ratingAvg: agg._avg.rating || 0, ratingCount: agg._count.rating },
     })
+
+    const preset = await prisma.preset.findUnique({ where: { id: presetId }, select: { authorId: true, name: true, slug: true } })
+    if (preset) {
+      await notify({
+        userId: preset.authorId, actorId: user.id, type: 'review',
+        message: `${user.displayName || user.username} rated "${preset.name}" ${rating}★`,
+        link: `/marketplace/${preset.slug}`,
+      })
+    }
 
     return NextResponse.json({ review })
   } catch (e: any) {
