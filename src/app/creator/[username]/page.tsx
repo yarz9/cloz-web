@@ -55,9 +55,13 @@ export default function CreatorProfilePage() {
       <div className="glass-strong rounded-2xl p-8 mb-8 relative overflow-hidden">
         <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.05),transparent_70%)]" />
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-3xl font-bold text-white shrink-0">
-            {(profile.displayName || profile.username).charAt(0).toUpperCase()}
-          </div>
+          {profile.avatarUrl ? (
+            <img src={profile.avatarUrl} alt="" className="w-20 h-20 rounded-2xl object-cover shrink-0" />
+          ) : (
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-3xl font-bold text-white shrink-0">
+              {(profile.displayName || profile.username).charAt(0).toUpperCase()}
+            </div>
+          )}
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <h1 className="text-2xl font-extrabold">{profile.displayName || profile.username}</h1>

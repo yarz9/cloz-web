@@ -66,9 +66,13 @@ export default function CreatorsPage() {
                 <span className="absolute top-3 right-3 text-[0.55rem] font-bold px-2 py-0.5 rounded-full bg-[rgba(251,191,36,0.12)] text-[#fbbf24]">#{i + 1}</span>
               )}
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-lg font-bold text-white shrink-0">
-                  {(c.displayName || c.username).charAt(0).toUpperCase()}
-                </div>
+                {c.avatarUrl ? (
+                  <img src={c.avatarUrl} alt="" className="w-12 h-12 rounded-2xl object-cover shrink-0" />
+                ) : (
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#60a5fa] to-[#a78bfa] flex items-center justify-center text-lg font-bold text-white shrink-0">
+                    {(c.displayName || c.username).charAt(0).toUpperCase()}
+                  </div>
+                )}
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-[0.92rem] font-bold truncate">{c.displayName || c.username}</span>
