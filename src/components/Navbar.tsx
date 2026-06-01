@@ -21,7 +21,11 @@ function UserMenu() {
   if (!user) return null
 
   return (
-    <div className="relative">
+    <div className="relative flex items-center gap-2">
+      {/* Always-visible credit balance */}
+      <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg glass text-[0.74rem] font-bold text-[#fbbf24]" title="Your credit balance">
+        {user.credits ?? 0} <span className="text-[0.6rem] opacity-70">C$</span>
+      </span>
       <button onClick={() => setOpen(!open)}
         className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-lg glass glass-hover transition-all">
         {user.avatarUrl ? (
@@ -42,6 +46,7 @@ function UserMenu() {
             <div className="px-3 py-2.5 border-b border-[rgba(255,255,255,0.05)] mb-1">
               <div className="text-[0.82rem] font-semibold truncate">{user.displayName || user.username}</div>
               <div className="text-[0.65rem] text-[rgba(255,255,255,0.3)] truncate">{user.email}</div>
+              <div className="text-[0.7rem] mt-1.5 text-[#fbbf24] font-bold">Balance: {user.credits ?? 0} C$</div>
               {user.plan && user.plan !== 'free' && (
                 <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full text-[0.55rem] font-bold bg-[rgba(251,191,36,0.1)] text-[#fbbf24] border border-[rgba(251,191,36,0.2)]">
                   <Crown size={9} /> {user.plan.toUpperCase()}

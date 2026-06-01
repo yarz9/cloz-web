@@ -14,6 +14,7 @@ function AccountContent() {
   const searchParams = useSearchParams()
   const [tab, setTab] = useState(searchParams.get('tab') || 'profile')
   const [favorites, setFavorites] = useState<any[]>([])
+  const [purchases, setPurchases] = useState<any[]>([])
   const [displayName, setDisplayName] = useState('')
   const [bio, setBio] = useState('')
   const [saving, setSaving] = useState(false)
@@ -51,6 +52,9 @@ function AccountContent() {
   useEffect(() => {
     if (tab === 'favorites' && user) {
       fetch('/api/favorites').then(r => r.json()).then(d => setFavorites(d.favorites || [])).catch(() => {})
+    }
+    if (tab === 'purchases' && user) {
+      fetch('/api/account/purchases').then(r => r.json()).then(d => setPurchases(d.purchases || [])).catch(() => {})
     }
     if (tab === 'subscription' && user) {
       fetch('/api/license/activate').then(r => r.json()).then(d => setLicenses(d.licenses || [])).catch(() => {})
@@ -181,6 +185,7 @@ function AccountContent() {
     { id: 'profile', label: 'Profile', icon: User },
     { id: 'subscription', label: 'Subscription', icon: Crown },
     { id: 'favorites', label: 'Favorites', icon: Heart },
+    { id: 'purchases', label: 'Purchases', icon: Download },
     { id: 'media', label: 'Media', icon: ImageIcon },
     { id: 'settings', label: 'Settings', icon: Settings },
   ]
@@ -399,6 +404,37 @@ function AccountContent() {
                 <div className="glass rounded-xl p-12 text-center">
                   <Heart size={28} className="mx-auto mb-3 text-[rgba(255,255,255,0.12)]" />
                   <p className="text-[0.82rem] text-[rgba(255,255,255,0.3)]">No favorites yet</p>
+                  <Link href="/marketplace" className="text-[0.75rem] text-[#60a5fa] hover:underline mt-2 inline-block">Browse marketplace</Link>
+                </div>
+              )}
+            </div>
+          )}
+
+          {tab === 'purchases' && (
+            <div>
+              <h2 className="text-lg font-bold mb-4">My Purchases</h2>
+              {purchases.length > 0 ? (
+                <div className="space-y-3">
+                  {purchases.map((p: any) => (
+                    <Link key={p.id} href={`/marketplace/${p.slug}`}
+                      className="glass rounded-xl p-4 flex items-center gap-4 glass-hover transition-all">
+                      <div className="w-10 h-10 rounded-lg bg-[rgba(96,165,250,0.12)] flex items-center justify-center shrink-0">
+                        <Sparkles size={16} className="text-[#60a5fa]" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-[0.85rem] font-semibold">{p.name}</div>
+                        <div className="text-[0.65rem] text-[rgba(255,255,255,0.3)]">by {p.author.displayName || p.author.username} · {new Date(p.acquiredAt).toLocaleDateString()}</div>
+                      </div>
+                      <span className={`text-[0.62rem] font-bold px-2 py-0.5 rounded-full ${p.price > 0 ? 'bg-[rgba(251,191,36,0.12)] text-[#fbbf24]' : 'bg-[rgba(74,222,128,0.1)] text-[#4ade80]'}`}>
+                        {p.price > 0 ? `${p.price} C$` : 'Free'}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="glass rounded-xl p-12 text-center">
+                  <Download size={28} className="mx-auto mb-3 text-[rgba(255,255,255,0.12)]" />
+                  <p className="text-[0.82rem] text-[rgba(255,255,255,0.3)]">No purchases yet</p>
                   <Link href="/marketplace" className="text-[0.75rem] text-[#60a5fa] hover:underline mt-2 inline-block">Browse marketplace</Link>
                 </div>
               )}
